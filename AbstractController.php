@@ -17,8 +17,6 @@ abstract class AbstractController {
 	protected $_init;
 	protected $_action;
 
-	protected $sendHtml;
-
 	public function __construct($config = null){
 		$this->config = $config;
 
@@ -28,9 +26,6 @@ abstract class AbstractController {
 			$this->user = new \Hagane\Model\User($this->auth, $this->db);
 		}
 
-		$this->sendHtml = false;
-		$this->_viewPath = $this->config['appPath'] . 'View/';
-		$this->template = '';
 		$this->view = '';
 		$this->_init = '';
 		$this->_action = '';
@@ -55,33 +50,15 @@ abstract class AbstractController {
 			header("Content-type: application/json; charset=utf-8");
 		}
 
-		return $this->getView($action);
+		return $this->linkInitAction($action);
 	}
 
-	public function getView($action){
+	public function linkInitAction($action){
 		$class = explode("\\", get_class($this));
-		$viewFile = array_pop($class).'/'.$action.'.phtml';
-
-		$this->view = $this->renderView($viewFile);
 
 		$this->view .= $this->_init;
 		$this->view .= $this->_action;
 		return $this->view;
-	}
-
-	//this function renders the view, executing its PHP functions
-	//returns HTML string
-	public function renderView($name){
-		$this->_file = $this->_viewPath . $name;
-		unset($name); // remove $name from local scope
-		if (file_exists($this->_file)) {
-			ob_start();
-			include $this->_file;
-			return ob_get_clean();
-		} else {
-			//echo 'file not found';
-			return null;
-		}
 	}
 
 	private function secureImageParse($path){
