@@ -7,13 +7,10 @@ namespace Hagane\Controller;
 abstract class AbstractController {
 	protected $config;
 	protected $view;
-	protected $template;
 	protected $db;
 	protected $auth;
 	protected $user;
 
-	protected $_file;
-	protected $_viewPath;
 	protected $_init;
 	protected $_action;
 
@@ -29,7 +26,6 @@ abstract class AbstractController {
 		$this->view = '';
 		$this->_init = '';
 		$this->_action = '';
-		$this->number = 0;
 	}
 
 	public function executeAction($action){
@@ -61,6 +57,15 @@ abstract class AbstractController {
 		return $this->view;
 	}
 
+	public function redirect($routeName) {
+		if (substr($routeName, 0, 1) == '/') {
+			$routeName = substr($routeName, 1);
+		}
+		header("Location: ".$this->config['document_root'].$routeName);
+	}
+
+
+	//vamos a ver si si tiene futuro estas funciones en la api
 	private function secureImageParse($path){
 		//Number to Content Type
 		$file = $this->config['appPath'].'SecureImages/'.$path;
@@ -78,34 +83,6 @@ abstract class AbstractController {
 	public function getSecureImage($path){
 		$img = $this->secureImageParse($path);
 		return  'data:'.$img['mime'].';base64,'.$img['image'];
-	}
-
-	public function redirect($routeName) {
-		if (substr($routeName, 0, 1) == '/') {
-			$routeName = substr($routeName, 1);
-		}
-		header("Location: ".$this->config['document_root'].$routeName);
-	}
-
-	//This method loads javacript from the app folder, behind public.
-	//returns the javascript in a string.
-	public function loadJS($fileRoute) {
-		if (substr($fileRoute, 0, 1) == '/') {
-			$fileRoute = substr($fileRoute, 1);
-		}
-
-		$fileRoute = $this->config['appPath'] . '/FrontEnd/' . $fileRoute;
-		if (file_exists($fileRoute)) {
-			ob_start();
-			include $fileRoute;
-
-			$File =  ob_get_clean();
-			$Header = '<script type="text/javascript">' . $File . '</script>';
-			return $Header;
-		} else {
-			echo 'file not found';
-			return null;
-		}
 	}
 }
 
