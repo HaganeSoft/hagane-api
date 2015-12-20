@@ -17,9 +17,7 @@ abstract class AbstractController {
 	protected $_init;
 	protected $_action;
 
-	protected $print_template;
-	protected $custom_template;
-	protected $sendJson;
+	protected $sendHtml;
 
 	public function __construct($config = null){
 		$this->config = $config;
@@ -30,14 +28,12 @@ abstract class AbstractController {
 			$this->user = new \Hagane\Model\User($this->auth, $this->db);
 		}
 
-		$this->print_template = true;
-		$this->sendJson = false;
+		$this->sendHtml = false;
 		$this->_viewPath = $this->config['appPath'] . 'View/';
 		$this->template = '';
 		$this->view = '';
 		$this->_init = '';
 		$this->_action = '';
-		$this->custom_template = null;
 		$this->number = 0;
 	}
 
@@ -53,8 +49,13 @@ abstract class AbstractController {
 		$this->$action();
 		$this->_action = ob_get_clean();
 
-		$this->getView($action);
-		return $this->getTemplate();
+		if ($this->sendHtml) {
+			header('Content-type: text/html; charset=utf-8');
+		} else {
+			header("Content-type: application/json; charset=utf-8");
+		}
+
+		return $this->getView($action);
 	}
 
 	public function getView($action){
@@ -66,27 +67,6 @@ abstract class AbstractController {
 		$this->view .= $this->_init;
 		$this->view .= $this->_action;
 		return $this->view;
-	}
-
-	public function getTemplate(){
-		if ($this->print_template) {
-			if ($this->custom_template == null) {
-				$templateFile = 'Template/'.$this->config['template'].'.phtml';
-			} else {
-				$templateFile = 'Template/'.$this->custom_template.'.phtml';
-			}
-
-			$this->template = $this->renderView($templateFile);
-			return $this->template;
-		} else {
-			if ($this->sendJson) {
-				header("Content-type: application/json; charset=utf-8");
-			} else {
-				header('Content-type: text/html; charset=utf-8');
-			}
-			$this->template = $this->view;
-			return $this->template;
-		}
 	}
 
 	//this function renders the view, executing its PHP functions
