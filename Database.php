@@ -12,19 +12,19 @@ class Database {
 		$this->config = $config;
 		$this->database_log['error'] = '';
 
-		if (!isset($this->config['db_engine'])) {
-			//destruye
-			print("error bd");
-		}
-
-		if (strcasecmp($this->config['db_engine'], 'mysql') == 0) {
-			try {
-				$this->pdo = new \PDO("mysql:host=".$this->config['db_server'].";dbname=".$this->config['db_database'].";charset=UTF8", $this->config['db_user'], $this->config['db_password']);
-				$this->active = true;
-			} catch (\PDOException $e) {
-				$this->database_log['error'] .= $e->getMessage();
-				//print($this->database_log['error']);
+		if (isset($this->config['db_engine'])) {
+			if (strcasecmp($this->config['db_engine'], 'mysql') == 0) {
+				try {
+					$this->pdo = new \PDO("mysql:host=".$this->config['db_server'].";dbname=".$this->config['db_database'].";charset=UTF8", $this->config['db_user'], $this->config['db_password']);
+					$this->active = true;
+				} catch (\PDOException $e) {
+					$this->database_log['error'] .= $e->getMessage();
+					//print($this->database_log['error']);
+				}
 			}
+		} else {
+			//destruye
+			$this->database_log['error'] = "No se especifico un 'db_engine'";
 		}
 	}
 
