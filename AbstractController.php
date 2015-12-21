@@ -52,8 +52,6 @@ abstract class AbstractController {
 			header("Content-type: application/json; charset=utf-8");
 			return $this->message->send();
 		}
-
-
 	}
 
 	public function linkInitAction($action){
@@ -67,27 +65,6 @@ abstract class AbstractController {
 			$routeName = substr($routeName, 1);
 		}
 		header("Location: ".$this->config['document_root'].$routeName);
-	}
-
-
-	//vamos a ver si si tiene futuro estas funciones en la api
-	private function secureImageParse($path){
-		//Number to Content Type
-		$file = $this->config['appPath'].'SecureImages/'.$path;
-		$ntct = Array( "1" => "image/gif",
-			"2" => "image/jpeg",
-			"3" => "image/png",
-			"6" => "image/bmp",
-			"17" => "image/ico");
-
-		return  Array(
-			'image' => base64_encode(file_get_contents($file)),
-			'mime' => $ntct[exif_imagetype($file)]);
-	}
-
-	public function getSecureImage($path){
-		$img = $this->secureImageParse($path);
-		return  'data:'.$img['mime'].';base64,'.$img['image'];
 	}
 }
 
