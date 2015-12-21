@@ -2,16 +2,32 @@
 namespace Hagane;
 
 class Database {
+	private static $instance;
 	private $pdo;
 	private $active;
 	private $config = array();
 	public $database_log = array();
 	private $_message;
 
-	function  __construct($config){
+	public static function getInstance()
+	{
+		if (null === static::$instance) {
+			static::$instance = new static();
+		}
+		return static::$instance;
+	}
+
+	protected function  __construct(){
+	}
+	private function __clone(){
+    }
+    private function __wakeup(){
+    }
+
+    public function  setDatabase($config){
 		$this->active = false;
 		$this->config = $config;
-		$this->_message = \Hagane\Message\Message::getInstance();
+		$this->_message = \Hagane\Message::getInstance();
 
 		if (isset($this->config['db_engine'])) {
 			if (strcasecmp($this->config['db_engine'], 'mysql') == 0) {

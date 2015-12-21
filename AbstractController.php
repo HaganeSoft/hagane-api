@@ -13,13 +13,14 @@ abstract class AbstractController {
 
 	protected $_init;
 	protected $_action;
-	protected $_message;
+	protected $message;
 
 	public function __construct($config = null){
 		$this->config = $config;
-		$this->_message = \Hagane\Message\Message::getInstance();
+		$this->message = \Hagane\Message::getInstance();
 
-		$this->db = new \Hagane\Database($this->config);
+		$this->db = \Hagane\Database::getInstance();
+		$this->db->setDatabase($this->config);
 		if ($this->db->isActive()) {
 			$this->auth = new \Hagane\Authentication($this->config, $this->db);
 			$this->user = new \Hagane\Model\User($this->auth, $this->db);
@@ -49,7 +50,7 @@ abstract class AbstractController {
 			return $this->linkInitAction($action);
 		} else {
 			header("Content-type: application/json; charset=utf-8");
-			return $this->_message->send();
+			return $this->message->send();
 		}
 
 

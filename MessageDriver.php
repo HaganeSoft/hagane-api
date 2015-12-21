@@ -1,5 +1,5 @@
 <?php
-namespace Hagane\Message;
+namespace Hagane;
 
 class Message {
 	private static $instance;
@@ -13,7 +13,7 @@ class Message {
 		return static::$instance;
 	}
 
-	public function __construct(){
+	protected function __construct(){
 	}
 	private function __clone(){
     }
