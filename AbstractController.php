@@ -13,9 +13,11 @@ abstract class AbstractController {
 
 	protected $_init;
 	protected $_action;
+	protected $_message;
 
 	public function __construct($config = null){
 		$this->config = $config;
+		$this->_message = \Hagane\Message\Message::getInstance();
 
 		$this->db = new \Hagane\Database($this->config);
 		if ($this->db->isActive()) {
@@ -26,6 +28,8 @@ abstract class AbstractController {
 		$this->view = '';
 		$this->_init = '';
 		$this->_action = '';
+		$this->sendHtml = false;
+
 	}
 
 	public function executeAction($action){
@@ -42,16 +46,16 @@ abstract class AbstractController {
 
 		if ($this->sendHtml) {
 			header('Content-type: text/html; charset=utf-8');
+			return $this->linkInitAction($action);
 		} else {
 			header("Content-type: application/json; charset=utf-8");
+			return $this->_message->send();
 		}
 
-		return $this->linkInitAction($action);
+
 	}
 
 	public function linkInitAction($action){
-		$class = explode("\\", get_class($this));
-
 		$this->view .= $this->_init;
 		$this->view .= $this->_action;
 		return $this->view;

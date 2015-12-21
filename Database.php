@@ -6,11 +6,12 @@ class Database {
 	private $active;
 	private $config = array();
 	public $database_log = array();
+	private $_message;
 
 	function  __construct($config){
 		$this->active = false;
 		$this->config = $config;
-		$this->database_log['error'] = '';
+		$this->_message = \Hagane\Message\Message::getInstance();
 
 		if (isset($this->config['db_engine'])) {
 			if (strcasecmp($this->config['db_engine'], 'mysql') == 0) {
@@ -24,7 +25,7 @@ class Database {
 			}
 		} else {
 			//destruye
-			$this->database_log['error'] = "No se especifico un 'db_engine'";
+			$this->_message->append('dbError:construct','No se especifico un "db_engine"');
 		}
 	}
 
