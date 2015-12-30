@@ -1,7 +1,7 @@
 <?php
-namespace Hagane\Controller;
+namespace Hagane\Resource;
 
-class Index extends AbstractController{
+class Index extends AbstractResource{
 
 	function _init() {
 		//echo $this->db->database_log['error'];

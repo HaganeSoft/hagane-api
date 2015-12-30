@@ -1,7 +1,7 @@
 <?php
-namespace Hagane\Controller;
+namespace Hagane\Resource;
 
-class User extends AbstractController{
+class User extends AbstractResource{
 	function _init() {
 	}
 

@@ -1,10 +1,10 @@
 <?php
-namespace Hagane\Controller;
+namespace Hagane\Resource;
 
-//el abastracto del controller va a dar de alta todas las variables y servicios necesarios para
+//el abastracto del resource va a dar de alta todas las variables y servicios necesarios para
 //esconder esta funcionalidad del uso cotidiano
 
-abstract class AbstractController {
+abstract class AbstractResource {
 	protected $config;
 	protected $view;
 	protected $db;

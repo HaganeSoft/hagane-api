@@ -21,6 +21,7 @@ $indexPath = dirname(__FILE__);
 
 //echo str_replace(dirname(__DIR__), '', dirname(__FILE__));
 echo $_SERVER["DOCUMENT_ROOT"];
+echo $_SERVER['SCRIPT_NAME'];
 //echo dirname(__FILE__);
 
 // include_once($HaganeInit['appFolderDepth'].'hgn-api/init.php');
