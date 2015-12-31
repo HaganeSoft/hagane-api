@@ -8,10 +8,12 @@ namespace Hagane;
 class Router {
 	private $config = array();
 	private $routes = array();
+	private $message;
 
 	function __construct(&$config){
 		$this->config = $config->getConf();
 		$this->routes = $config->getRoutes();
+		$this->message = \Hagane\Message::getInstance();
 	}
 
 	function parse() {
@@ -28,49 +30,24 @@ class Router {
 		}
 		$request = explode("/", $request);
 
-		if (isset($request[0]) && strpos($request[0], 'index.php') !== false) {
-			$request[0] = $_GET['controller'];
-			$request[1] = $_GET['action'];
-		}
+		return $request;
+	}
 
-		//chequeo de existencia de controller
-		if (isset($request[0]) && $request[0] != '') {
-			if (!file_exists($this->config['appPath'].'Controller/'.$request[0].'.php')) {
-				//si no existe el controller
-				include_once($this->config['appPath'].'Controller/Error.php');
-				$controller = new \Hagane\Controller\Error($this->config);
+	function load($uri) {
+		//chequeo de existencia de uri
+		if (isset($uri[0]) && $uri[0] != '') {
+			if (file_exists($this->config['appPath'].'Resource/'.$uri[0].'.php')) {
+				include_once($this->config['appPath'].'Resource/'.$uri[0].'.php');
+				return $uri[0];
 			} else {
-				include_once($this->config['appPath'].'Controller/'.$request[0].'.php');
-				$class = '\\Hagane\\Controller\\'.$request[0];
-				$controller = new $class($this->config);  //hay que ver si no se quedan 2 objetos volando por cada request
+				//si no existe el resource
+				$this->message->append('error:load:parse', 'Resource path not found');
+				return false;
 			}
 		} else {
-			//si no hay controller
-			include_once($this->config['appPath'].'Controller/Index.php');
-			$controller = new \Hagane\Controller\Index($this->config);
+			$this->message->append('error:load:parse', 'Resource request not found');
+			return false;
 		}
-
-		//chequeo de existencia de accion
-		if (isset($request[1]) && $request[1] != '') {
-			if (!method_exists($controller, $request[1])) {
-				//si no existe la accion
-				include_once($this->config['appPath'].'Controller/Error.php');
-				$controller = new \Hagane\Controller\Error($this->config);
-				$request[1] = 'index';
-			}
-		} else {
-			//si no hay accion
-			$request[1] = 'index';
-		}
-
-		$params =
-			array(
-				'controller' => $controller,
-				'action' => $request[1]
-				);
-
-		return $params;
-
 	}
 
 	function match($request){

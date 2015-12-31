@@ -21,7 +21,7 @@ class App {
 		include_once($HaganeInit['appFolderDepth'].$HaganeInit['appFolderName'].'/Model/UserModel.php');
 
 		$router = new \Hagane\Router($config);
-		$params = $router->parse();
+		$uri = $router->parse();
 
 		$ControllerDriver = new \Hagane\ControllerDriver($config->getConf());
 		$ControllerDriver->execute($params);  //params >>> controllerName, action and get params

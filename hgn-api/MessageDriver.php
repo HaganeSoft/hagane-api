@@ -16,9 +16,9 @@ class Message {
 	protected function __construct(){
 	}
 	private function __clone(){
-    }
-    private function __wakeup(){
-    }
+	}
+	private function __wakeup(){
+	}
 
 	function appendArray($incommingData = array()) {
 		if (empty($this->data)) {
