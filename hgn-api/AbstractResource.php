@@ -6,31 +6,29 @@ namespace Hagane\Resource;
 
 abstract class AbstractResource {
 	protected $config;
-	protected $view;
 	protected $db;
-	protected $auth;
-	protected $user;
-
-	protected $_init;
-	protected $_action;
 	protected $message;
 
+	private $getNode;
+
 	public function __construct($config = null){
+		$this->getNode = array();
 		$this->config = $config;
 		$this->message = \Hagane\Message::getInstance();
 
 		$this->db = \Hagane\Database::getInstance();
 		$this->db->setDatabase($this->config);
-		if ($this->db->isActive()) {
-			$this->auth = new \Hagane\Authentication($this->config, $this->db);
-			$this->user = new \Hagane\Model\User($this->auth, $this->db);
+	}
+
+	public function executeURI($uri) {
+		if ($uri['method'] == 'GET') {
+			$this->message->append('executeURI','done');
+			echo $this->message->send();
 		}
+	}
 
-		$this->view = '';
-		$this->_init = '';
-		$this->_action = '';
-		$this->sendHtml = false;
-
+	public function get($path, $function) {
+		$this->getNode[$path] = $function;
 	}
 
 	public function executeAction($action){
@@ -52,19 +50,6 @@ abstract class AbstractResource {
 			header("Content-type: application/json; charset=utf-8");
 			return $this->message->send();
 		}
-	}
-
-	public function linkInitAction($action){
-		$this->view .= $this->_init;
-		$this->view .= $this->_action;
-		return $this->view;
-	}
-
-	public function redirect($routeName) {
-		if (substr($routeName, 0, 1) == '/') {
-			$routeName = substr($routeName, 1);
-		}
-		header("Location: ".$this->config['document_root'].$routeName);
 	}
 }
 

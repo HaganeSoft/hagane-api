@@ -5,7 +5,7 @@ class Database {
 	private static $instance;
 	private $pdo;
 	private $active;
-	private $config = array();
+	private $config;
 	public $database_log = array();
 	private $_message;
 
@@ -26,7 +26,7 @@ class Database {
 
     public function  setDatabase($config){
 		$this->active = false;
-		$this->config = $config;
+		$this->config = $config->getConf();
 		$this->_message = \Hagane\Message::getInstance();
 
 		if (isset($this->config['db_engine'])) {

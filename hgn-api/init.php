@@ -22,12 +22,17 @@ class App {
 
 		$router = new \Hagane\Router($config);
 		$uri = $router->parse(); // gets an array being 0:resource and so on.
-		$router->load($uri); // loads the resourse paths
+		$resourceName = $router->load($uri); // loads the resource name if it exist else its a false
 
 		$RerosurceClass = '\\Hagane\\Resource\\'.$uri[0];
-		$resource = new $RerosurceClass($config);
-
-
+		if ($resourceName) {
+			$resource = new $RerosurceClass($config);
+			$resource->executeURI($uri);
+		} else {
+			$this->message = \Hagane\Message::getInstance();
+			$this->message->append('error:app:init','Resource not found(404): '.$uri[0]);
+			echo $this->message->send();
+		}
 
 		// $ResourceDriver = new \Hagane\ResourceDriver($config->getConf());
 		// $ResourceDriver->execute($params);  //params >>> controllerName, action and get params

@@ -13,20 +13,18 @@ $HaganeInit = array(
 );
 
 $depth = explode('..', $HaganeInit['appFolderDepth']);
-print_r($depth);
+//print_r($depth);
 if ($depth[0] =='') {
 	$steps = (count($depth) - 1);
 }
 $indexPath = dirname(__FILE__);
 
 //echo str_replace(dirname(__DIR__), '', dirname(__FILE__));
-echo $_SERVER["DOCUMENT_ROOT"];
-echo $_SERVER['SCRIPT_NAME'];
 //echo dirname(__FILE__);
 
-// include_once($HaganeInit['appFolderDepth'].'hgn-api/init.php');
+include_once($HaganeInit['appFolderDepth'].'hgn-api/init.php');
 
-// $app = new \Hagane\App();
-// $app->start($HaganeInit);
+$app = new \Hagane\App();
+$app->start($HaganeInit);
 // phpinfo();
 ?>
