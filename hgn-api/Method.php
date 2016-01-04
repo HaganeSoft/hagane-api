@@ -2,7 +2,8 @@
 namespace Hagane\Resource;
 
 class Method {
-	private $node;
+	private $key;
+	private $method;
 
 	public function __construct() {
 		$this->node = array();

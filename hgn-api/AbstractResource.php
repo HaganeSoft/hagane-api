@@ -9,7 +9,7 @@ abstract class AbstractResource {
 	protected $db;
 	protected $message;
 
-	private $getNode;
+	protected $getNode;
 
 	public function __construct($config = null){
 		$this->getNode = array();
@@ -22,13 +22,13 @@ abstract class AbstractResource {
 
 	public function executeURI($uri) {
 		if ($uri['method'] == 'GET') {
-			$this->message->append('executeURI','done');
-			echo $this->message->send();
+			$call = $this->getNode['id'];
+			$call();
 		}
 	}
 
-	public function get($path, $function) {
-		$this->getNode[$path] = $function;
+	protected function get($path, $function) {
+		$this->getNode = array_merge($this->getNode, array($path => $function));
 	}
 
 	public function executeAction($action){

@@ -27,6 +27,7 @@ class App {
 		$RerosurceClass = '\\Hagane\\Resource\\'.$uri[0];
 		if ($resourceName) {
 			$resource = new $RerosurceClass($config);
+			$resource->load();
 			$resource->executeURI($uri);
 		} else {
 			$this->message = \Hagane\Message::getInstance();
