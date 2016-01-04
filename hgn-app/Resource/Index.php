@@ -5,8 +5,12 @@ class Index extends AbstractResource{
 	function load() {
 
 		$this->get('clientes', function() {
-			$this->message->appendError('error', 'error');
-			$this->message->append('index:id', 'inside id');
+			$this->message->append('clientessssss', 'rrr');
+			echo $this->message->send();
+		});
+
+		$this->get('cliente', function() {
+			$this->message->append('rrrrrrr', 'sssss');
 			echo $this->message->send();
 		});
 	}

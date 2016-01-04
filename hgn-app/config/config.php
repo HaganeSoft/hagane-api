@@ -14,11 +14,11 @@ class Config {
 		return
 			array(
 				'appPath' => $this->appDepth.$this->appDir.'/',
-				// 'db_engine' => 'mysql',
-				// 'db_server' => 'localhost',
-				// 'db_database' => 'basket',
-				// 'db_user' => 'root',
-				// 'db_password' => '',
+				'db_engine' => 'mysql',
+				'db_server' => 'localhost',
+				'db_database' => 'basket',
+				'db_user' => 'root',
+				'db_password' => '',
 				'session_time' => 3600,
 				'document_root' => '/'
 			);

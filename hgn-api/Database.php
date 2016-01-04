@@ -35,13 +35,12 @@ class Database {
 					$this->pdo = new \PDO("mysql:host=".$this->config['db_server'].";dbname=".$this->config['db_database'].";charset=UTF8", $this->config['db_user'], $this->config['db_password']);
 					$this->active = true;
 				} catch (\PDOException $e) {
-					$this->database_log['error'] .= $e->getMessage();
-					//print($this->database_log['error']);
+					$this->_message->appendError('database:setdatabase','exception: ' . $e->getMessage());
 				}
 			}
 		} else {
 			//destruye
-			$this->_message->appendError('database:construct','undeclared db_engine');
+			$this->_message->appendError('database:setdatabase','undeclared db_engine');
 		}
 	}
 

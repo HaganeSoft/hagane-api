@@ -22,8 +22,13 @@ abstract class AbstractResource {
 
 	public function executeURI($uri) {
 		if ($uri['method'] == 'GET') {
-			$call = $this->getNode[$uri[1]];
-			$call();
+			if (array_key_exists($uri[1], $this->getNode)) {
+				$call = $this->getNode[$uri[1]];
+				$call();
+			} else {
+				$this->message->appendError('resource:execute','uri not found(404): '.$uri[1]);
+				echo $this->message->send();
+			}
 		}
 	}
 
