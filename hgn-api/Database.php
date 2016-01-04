@@ -41,7 +41,7 @@ class Database {
 			}
 		} else {
 			//destruye
-			$this->_message->append('error:database:construct','undeclared "db_engine"');
+			$this->_message->appendError('database:construct','undeclared db_engine');
 		}
 	}
 

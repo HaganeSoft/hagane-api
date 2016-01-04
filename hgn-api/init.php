@@ -31,7 +31,7 @@ class App {
 			$resource->executeURI($uri);
 		} else {
 			$this->message = \Hagane\Message::getInstance();
-			$this->message->append('error:app:init','Resource not found(404): '.$uri[0]);
+			$this->message->appendError('error:app:init','Resource not found(404): '.$uri[0]);
 			echo $this->message->send();
 		}
 

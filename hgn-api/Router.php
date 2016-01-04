@@ -55,11 +55,11 @@ class Router {
 				return $uri[0];
 			} else {
 				//si no existe el resource
-				$this->message->append('error:load:parse', 'Resource path not found');
+				$this->message->append('error:router:load', 'Resource path not found');
 				return false;
 			}
 		} else {
-			$this->message->append('error:load:parse', 'Resource request not found');
+			$this->message->append('error:router:load', 'Resource request not found');
 			return false;
 		}
 	}

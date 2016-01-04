@@ -22,7 +22,7 @@ abstract class AbstractResource {
 
 	public function executeURI($uri) {
 		if ($uri['method'] == 'GET') {
-			$call = $this->getNode['id'];
+			$call = $this->getNode[$uri[1]];
 			$call();
 		}
 	}
