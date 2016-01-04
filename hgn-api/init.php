@@ -1,10 +1,10 @@
 <?php
 namespace Hagane;
 
-include_once('AbstractController.php');
+include_once('AbstractResource.php');
 include_once('Database.php');
 include_once('Authentication.php');
-include_once('ControllerDriver.php');
+include_once('ResourceDriver.php');
 include_once('MessageDriver.php');
 include_once('Router.php');
 
@@ -18,13 +18,19 @@ class App {
 			include_once('Modules/'.$module.'.php');
 		}
 
-		include_once($HaganeInit['appFolderDepth'].$HaganeInit['appFolderName'].'/Model/UserModel.php');
+		// include_once($HaganeInit['appFolderDepth'].$HaganeInit['appFolderName'].'/Model/UserModel.php');
 
 		$router = new \Hagane\Router($config);
-		$uri = $router->parse();
+		$uri = $router->parse(); // gets an array being 0:resource and so on.
+		$router->load($uri); // loads the resourse paths
 
-		$ControllerDriver = new \Hagane\ControllerDriver($config->getConf());
-		$ControllerDriver->execute($params);  //params >>> controllerName, action and get params
+		$RerosurceClass = '\\Hagane\\Resource\\'.$uri[0];
+		$resource = new $RerosurceClass($config);
+
+
+
+		// $ResourceDriver = new \Hagane\ResourceDriver($config->getConf());
+		// $ResourceDriver->execute($params);  //params >>> controllerName, action and get params
 	}
 
 }
