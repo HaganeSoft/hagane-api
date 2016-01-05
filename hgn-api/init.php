@@ -23,14 +23,14 @@ class App {
 		$uri = $router->parse(); // gets an array being 0:resource and so on.
 		$resourceName = $router->load($uri); // loads the resource name if it exist else its a false
 
-		$RerosurceClass = '\\Hagane\\Resource\\'.$uri[0];
+		$RerosurceClass = '\\Hagane\\Resource\\'.$uri['resource'];
 		if ($resourceName) {
 			$resource = new $RerosurceClass($config);
 			$resource->load();
 			$resource->executeURI($uri);
 		} else {
 			$this->message = \Hagane\Message::getInstance();
-			$this->message->appendError('error:app:init','Resource not found(404): '.$uri[0]);
+			$this->message->appendError('error:app:init','Resource not found(404): '.$uri['resource']);
 			echo $this->message->send();
 		}
 

@@ -22,12 +22,12 @@ abstract class AbstractResource {
 
 	public function executeURI($uri) {
 		if ($uri['method'] == 'GET') {
-			if (isset($uri[1]) && $uri[1] != '') {
-				if (array_key_exists($uri[1], $this->getNode)) {
-					$call = $this->getNode[$uri[1]];
+			if (isset($uri['uri']) && $uri['uri'] != '') {
+				if (array_key_exists($uri['uri'], $this->getNode)) {
+					$call = $this->getNode[$uri['uri']];
 					$call();
 				} else {
-					$this->message->appendError('resource:execute','uri not found(404): ' . $uri[1]);
+					$this->message->appendError('resource:execute','uri not found(404): ' . $uri['uri']);
 					echo $this->message->send();
 				}
 			} else {
@@ -39,27 +39,6 @@ abstract class AbstractResource {
 
 	protected function get($path, $function) {
 		$this->getNode = array_merge($this->getNode, array($path => $function));
-	}
-
-	public function executeAction($action){
-		if (method_exists($this, '_init')) {
-			ob_start();
-			$this->_init();
-			$this->init = ob_get_clean();
-		}
-
-		//ejecucion de accion
-		ob_start();
-		$this->$action();
-		$this->_action = ob_get_clean();
-
-		if ($this->sendHtml) {
-			header('Content-type: text/html; charset=utf-8');
-			return $this->linkInitAction($action);
-		} else {
-			header("Content-type: application/json; charset=utf-8");
-			return $this->message->send();
-		}
 	}
 }
 

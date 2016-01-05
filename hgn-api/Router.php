@@ -28,7 +28,7 @@ class Router {
 		if ($tmp = $this->match((string)$request)) {
 			$request = $tmp;
 		}
-		$request = explode("/", $request);
+		$requestArray = explode("/", $request);
 
 		//check method
 		$method = $_SERVER['REQUEST_METHOD'];
@@ -42,9 +42,12 @@ class Router {
 			}
 		}
 
-		$request['method'] = $method;
+		$requestArray['resource'] = $requestArray[0];
+		$requestArray['method'] = $method;
+		$requestArray['request'] = $request;
+		$requestArray['uri'] = str_replace($requestArray['resource'], '', $request);
 
-		return $request;
+		return $requestArray;
 	}
 
 	function load($uri) {

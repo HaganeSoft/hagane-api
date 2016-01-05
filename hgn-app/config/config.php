@@ -16,7 +16,7 @@ class Config {
 				'appPath' => $this->appDepth.$this->appDir.'/',
 				'db_engine' => 'mysql',
 				'db_server' => 'localhost',
-				'db_database' => 'basket',
+				'db_database' => 'hagane_pef',
 				'db_user' => 'root',
 				'db_password' => '',
 				'session_time' => 3600,

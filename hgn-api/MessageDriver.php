@@ -49,6 +49,7 @@ class Message {
 	}
 
 	function send() {
+		header("Content-type: application/json; charset=utf-8");
 		return json_encode($this->data);
 	}
 }

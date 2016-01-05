@@ -4,7 +4,7 @@ namespace Hagane\Resource;
 class Index extends AbstractResource{
 	function load() {
 
-		$this->get('clientes', function() {
+		$this->get('/clientes', function() {
 			$this->message->append('clientessssss', 'rrr');
 			echo $this->message->send();
 		});
