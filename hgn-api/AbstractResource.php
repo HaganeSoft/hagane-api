@@ -22,15 +22,15 @@ abstract class AbstractResource {
 
 	public function execute($uri) {
 		if ($uri['method'] == 'GET') {
-			if (isset($uri['uri']) && $uri['uri'] != '') {
-				$this->match($uri);
-				// if (array_key_exists($uri['uri'], $this->getNode)) {
-				// 	$call = $this->getNode[$uri['uri']];
-				// 	$call();
-				// } else {
-				// 	$this->message->appendError('resource:execute','uri not found(404): ' . $uri['uri']);
-				// 	echo $this->message->send();
-				// }
+			if (isset($uri['uri']) && $uri['uri'] != '') { //if uri exists
+				$path = $this->match($uri); //get uri or null
+				if (isset($path)) {
+					$call = $this->getNode[$path]; //call to function using path
+					$call();
+				} else {
+					$this->message->appendError('resource:execute','uri not found(404): ' . $uri['uri']);
+					echo $this->message->send();
+				}
 			} else {
 				$this->message->appendError('resource:execute','uri not found(404): NULL');
 				echo $this->message->send();
@@ -44,24 +44,23 @@ abstract class AbstractResource {
 		//contar que sea el mismo numero
 		//ver si es igual y si tiene los dos puntos igunorar
 		foreach ($this->getNode as $path => $f) {
-			$req = true;
+			$req = true; //flag for path attributes
 			$objectPath = explode('/', $path);
 			$objNum = count($objectPath);
-			if ($objNum == count($request)) {
+			if ($objNum == count($request)) { //if the number of attributes are not the same, dont waste CPU!
 				for ($n=0; $n < $objNum; $n++) {
-					if (substr($objectPath[$n], 0, 1) != ':') {
+					if (substr($objectPath[$n], 0, 1) != ':') {  //ignore route parameters
 						if ($objectPath[$n] != $request[$n]) {
-							$req = false;
-							//echo 'lol';
+							$req = false; //does not match
 						}
 					}
 				}
-				if ($req) {
+				if ($req) { //everything went good, so this is the match
 					$result = $path;
 				}
 			}
 		}
-		print_r($result);
+		return $result;
 	}
 
 	protected function get($path, $function) {
