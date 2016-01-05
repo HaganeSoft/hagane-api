@@ -20,21 +20,48 @@ abstract class AbstractResource {
 		$this->db->setDatabase($this->config);
 	}
 
-	public function executeURI($uri) {
+	public function execute($uri) {
 		if ($uri['method'] == 'GET') {
 			if (isset($uri['uri']) && $uri['uri'] != '') {
-				if (array_key_exists($uri['uri'], $this->getNode)) {
-					$call = $this->getNode[$uri['uri']];
-					$call();
-				} else {
-					$this->message->appendError('resource:execute','uri not found(404): ' . $uri['uri']);
-					echo $this->message->send();
-				}
+				$this->match($uri);
+				// if (array_key_exists($uri['uri'], $this->getNode)) {
+				// 	$call = $this->getNode[$uri['uri']];
+				// 	$call();
+				// } else {
+				// 	$this->message->appendError('resource:execute','uri not found(404): ' . $uri['uri']);
+				// 	echo $this->message->send();
+				// }
 			} else {
 				$this->message->appendError('resource:execute','uri not found(404): NULL');
 				echo $this->message->send();
 			}
 		}
+	}
+
+	public function match($uri) {
+		$request = explode('/', $uri['uri']);
+		$result = null;
+		//contar que sea el mismo numero
+		//ver si es igual y si tiene los dos puntos igunorar
+		foreach ($this->getNode as $path => $f) {
+			$req = true;
+			$objectPath = explode('/', $path);
+			$objNum = count($objectPath);
+			if ($objNum == count($request)) {
+				for ($n=0; $n < $objNum; $n++) {
+					if (substr($objectPath[$n], 0, 1) != ':') {
+						if ($objectPath[$n] != $request[$n]) {
+							$req = false;
+							//echo 'lol';
+						}
+					}
+				}
+				if ($req) {
+					$result = $path;
+				}
+			}
+		}
+		print_r($result);
 	}
 
 	protected function get($path, $function) {

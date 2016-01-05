@@ -27,7 +27,7 @@ class App {
 		if ($resourceName) {
 			$resource = new $RerosurceClass($config);
 			$resource->load();
-			$resource->executeURI($uri);
+			$resource->execute($uri);
 		} else {
 			$this->message = \Hagane\Message::getInstance();
 			$this->message->appendError('error:app:init','Resource not found(404): '.$uri['resource']);
