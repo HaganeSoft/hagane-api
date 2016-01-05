@@ -10,9 +10,11 @@ abstract class AbstractResource {
 	protected $message;
 
 	protected $getNode;
+	protected $routeParam;
 
 	public function __construct($config = null){
 		$this->getNode = array();
+		$this->routeParams = array();
 		$this->config = $config;
 		$this->message = \Hagane\Message::getInstance();
 
@@ -41,6 +43,7 @@ abstract class AbstractResource {
 	public function match($uri) {
 		$request = explode('/', $uri['uri']);
 		$result = null;
+		$routeParams = array();
 		//contar que sea el mismo numero
 		//ver si es igual y si tiene los dos puntos igunorar
 		foreach ($this->getNode as $path => $f) {
@@ -53,6 +56,9 @@ abstract class AbstractResource {
 						if ($objectPath[$n] != $request[$n]) {
 							$req = false; //does not match
 						}
+					} else {
+						//add to route parameters
+						$this->routeParam[substr($objectPath[$n], 1)] = $request[$n];
 					}
 				}
 				if ($req) { //everything went good, so this is the match
@@ -60,6 +66,12 @@ abstract class AbstractResource {
 				}
 			}
 		}
+
+		//Processing route parameters
+		// if (isset($result)) {
+
+		// }
+
 		return $result;
 	}
 
