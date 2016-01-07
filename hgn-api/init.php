@@ -32,6 +32,7 @@ class App {
 			$this->message = \Hagane\Message::getInstance();
 			$this->message->appendError('error:app:init','Resource not found(404): '.$uri['resource']);
 			echo $this->message->send();
+			die();
 		}
 
 		// $ResourceDriver = new \Hagane\ResourceDriver($config->getConf());

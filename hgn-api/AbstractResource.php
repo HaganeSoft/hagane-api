@@ -26,20 +26,20 @@ abstract class AbstractResource {
 	}
 
 	public function execute($uri) {
-		if ($uri['method'] == 'GET') {
-			if (isset($uri['uri']) && $uri['uri'] != '') { //if uri exists
-				$path = $this->match($uri); //get uri or null
-				if (isset($path)) {
-					$call = $this->getNode[$path]; //call to function using path
-					$call();
-				} else {
-					$this->message->appendError('resource:execute','uri not found(404): ' . $uri['uri']);
-					echo $this->message->send();
-				}
+		if (isset($uri['uri']) && $uri['uri'] != '') { //if uri exists
+			$path = $this->match($uri); //get uri or null
+			if (isset($path)) {
+				$call = $this->{$path['methodNode']}[$path['path']]; //call to function using path
+				$call();
 			} else {
-				$this->message->appendError('resource:execute','uri not found(404): NULL');
+				$this->message->appendError('resource:execute','uri not found(404): ' . $uri['uri']);
 				echo $this->message->send();
+				die();
 			}
+		} else {
+			$this->message->appendError('resource:execute','uri not found(404): NULL');
+			echo $this->message->send();
+			die();
 		}
 	}
 
@@ -47,8 +47,27 @@ abstract class AbstractResource {
 		$request = explode('/', $uri['uri']);
 		$result = null;
 		$routeParams = array();
-		//contar que sea el mismo numero
-		//ver si es igual y si tiene los dos puntos igunorar
+
+		switch ($uri['method']) {
+			case 'DELETE':
+				$result['methodNode'] = 'deleteNode';
+				break;
+			case 'POST':
+				$result['methodNode'] = 'postNode';
+				break;
+			case 'GET':
+				$result['methodNode'] = 'getNode';
+				break;
+			case 'PUT':
+				$result['methodNode'] = 'putNode';
+				break;
+			default:
+				$this->message->appendError('resource:match','invalid method(405)');
+				echo $this->message->send();
+				die();
+				break;
+		}
+
 		foreach ($this->getNode as $path => $f) {
 			$req = true; //flag for path attributes
 			$objectPath = explode('/', $path);
@@ -65,7 +84,7 @@ abstract class AbstractResource {
 					}
 				}
 				if ($req) { //everything went good, so this is the match
-					$result = $path;
+					$result['path'] = $path;
 				}
 			}
 		}
