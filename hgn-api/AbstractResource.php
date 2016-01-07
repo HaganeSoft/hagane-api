@@ -10,6 +10,9 @@ abstract class AbstractResource {
 	protected $message;
 
 	protected $getNode;
+	protected $postNode;
+	protected $deleteNode;
+	protected $putNode;
 	protected $routeParam;
 
 	public function __construct($config = null){
@@ -67,16 +70,23 @@ abstract class AbstractResource {
 			}
 		}
 
-		//Processing route parameters
-		// if (isset($result)) {
-
-		// }
-
 		return $result;
 	}
 
 	protected function get($path, $function) {
 		$this->getNode = array_merge($this->getNode, array($path => $function));
+	}
+
+	protected function post($path, $function) {
+		$this->postNode = array_merge($this->postNode, array($path => $function));
+	}
+
+	protected function delete($path, $function) {
+		$this->deleteNode = array_merge($this->deleteNode, array($path => $function));
+	}
+
+	protected function put($path, $function) {
+		$this->putNode = array_merge($this->putNode, array($path => $function));
 	}
 }
 
