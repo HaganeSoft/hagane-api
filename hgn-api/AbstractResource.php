@@ -28,7 +28,7 @@ abstract class AbstractResource {
 	public function execute($uri) {
 		if (isset($uri['uri']) && $uri['uri'] != '') { //if uri exists
 			$path = $this->match($uri); //get uri or null
-			if (isset($path)) {
+			if (isset($path['path'])) {
 				$call = $this->{$path['methodNode']}[$path['path']]; //call to function using path
 				$call();
 			} else {
