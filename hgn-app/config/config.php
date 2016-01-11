@@ -33,10 +33,7 @@ class Config {
 		// Add custom routes here so you can call them with a simple route name
 		// Use the key of the element in the array as
 		return
-			array(
-				'logout' => 'User/logout',
-				'login' => 'User/index'
-			);
+			array();
 	}
 }
 ?>
