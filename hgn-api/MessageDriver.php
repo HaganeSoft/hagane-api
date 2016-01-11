@@ -30,11 +30,11 @@ class Message {
 
 	function append($key, $data) {
 		if (empty($this->data)) {
-			$this->data = array('data' => array($key => $data));
-		} elseif(empty($this->data['data'])) {
-			$this->data['data'] = array($key => $data);
+			$this->data = array('message' => array($key => $data));
+		} elseif(empty($this->data['message'])) {
+			$this->data['message'] = array($key => $data);
 		} else {
-			$this->data['data'] = array_merge($this->data['data'], array($key => $data));
+			$this->data['message'] = array_merge($this->data['message'], array($key => $data));
 		}
 	}
 
