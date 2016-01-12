@@ -68,7 +68,7 @@ class Database {
 		$statement = $this->pdo->prepare($queryString);
 		$statement->execute($data);
 
-		$result = $statement->fetchAll();
+		$result = $statement->fetchAll(\PDO::FETCH_ASSOC);
 		return $result;
 	}
 
@@ -76,7 +76,7 @@ class Database {
 		$statement = $this->pdo->prepare($queryString. ' LIMIT 1 ');
 		$statement->execute($data);
 
-		$result = $statement->fetch();
+		$result = $statement->fetch(\PDO::FETCH_ASSOC);
 		return $result;
 	}
 

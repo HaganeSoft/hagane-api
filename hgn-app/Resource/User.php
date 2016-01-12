@@ -12,7 +12,7 @@ class User extends AbstractResource{
 			$data = array('username' => $request->username, 'password' => $request->password);
 			$result = $this->db->getRow('SELECT * FROM User WHERE username=:username AND password=:password', $data);
 			if (!empty ( $result )) {
-				$this->message->appendArray('user', array(
+				$this->message->append('user', array(
 						'accessToken' => $this->generateSessionid($result['id']),
 						'id' => $result['id'],
 						'role' => $result['role']
