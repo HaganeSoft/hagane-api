@@ -20,18 +20,6 @@ class Message {
 	private function __wakeup(){
 	}
 
-	//quizas no es tan buena idea esta funcion :(
-	function appendArray($arrayName, $innerData = array()) {
-		if (empty($this->data)) {
-			$this->data = array('message' => array( $arrayName => $innerData));
-		} elseif (empty($this->data['message'])) {
-			$this->data['message'] = array( $arrayName => $innerData);
-		} else {
-			$this->data['message'] = array_merge($this->data['message'], array( $arrayName => $innerData));
-		}
-		$this->data['success'] = true;
-	}
-
 	function append($key, $data) {
 		if (empty($this->data)) {
 			$this->data = array('message' => array($key => $data));
