@@ -67,28 +67,28 @@ abstract class AbstractResource {
 				die();
 				break;
 		}
-
-		foreach ($this->getNode as $path => $f) {
-			$req = true; //flag for path attributes
-			$objectPath = explode('/', $path);
-			$objNum = count($objectPath);
-			if ($objNum == count($request)) { //if the number of attributes are not the same, dont waste CPU!
-				for ($n=0; $n < $objNum; $n++) {
-					if (substr($objectPath[$n], 0, 1) != ':') {  //ignore route parameters
-						if ($objectPath[$n] != $request[$n]) {
-							$req = false; //does not match
+		if (!empty($this->{$result['methodNode']})) {
+			foreach ($this->{$result['methodNode']} as $path => $f) {
+				$req = true; //flag for path attributes
+				$objectPath = explode('/', $path);
+				$objNum = count($objectPath);
+				if ($objNum == count($request)) { //if the number of attributes are not the same, dont waste CPU!
+					for ($n=0; $n < $objNum; $n++) {
+						if (substr($objectPath[$n], 0, 1) != ':') {  //ignore route parameters
+							if ($objectPath[$n] != $request[$n]) {
+								$req = false; //does not match
+							}
+						} else {
+							//add to route parameters
+							$this->routeParam[substr($objectPath[$n], 1)] = $request[$n];
 						}
-					} else {
-						//add to route parameters
-						$this->routeParam[substr($objectPath[$n], 1)] = $request[$n];
+					}
+					if ($req) { //everything went good, so this is the match
+						$result['path'] = $path;
 					}
 				}
-				if ($req) { //everything went good, so this is the match
-					$result['path'] = $path;
-				}
-			}
-		}
-
+			}//end foreach
+		}//end if is empty
 		return $result;
 	}
 

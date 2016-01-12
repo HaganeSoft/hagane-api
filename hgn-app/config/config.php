@@ -16,9 +16,9 @@ class Config {
 				'appPath' => $this->appDepth.$this->appDir.'/',
 				'db_engine' => 'mysql',
 				'db_server' => 'localhost',
-				'db_database' => 'hagane_pef',
-				'db_user' => 'root',
-				'db_password' => '',
+				'db_database' => 'haganeio_sisse',
+				'db_user' => 'haganeio_dev',
+				'db_password' => 'Bicarbonato1!',
 				'session_time' => 3600,
 				'document_root' => '/'
 			);

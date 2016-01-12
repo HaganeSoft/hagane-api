@@ -10,8 +10,8 @@ class Index extends AbstractResource{
 			echo $this->message->send();
 		});
 
-		$this->get('/clientes/:id', function() {
-			$this->message->append('rrrrrrr', 'sssss');
+		$this->get('/prueba/:id', function() {
+			$this->message->append('idparam', $this->routeParam['id']);
 			echo $this->message->send();
 		});
 	}

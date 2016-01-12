@@ -36,6 +36,7 @@ class Message {
 		} else {
 			$this->data['message'] = array_merge($this->data['message'], array($key => $data));
 		}
+		$this->data['success'] = true;
 	}
 
 	function appendError($key, $data) {
