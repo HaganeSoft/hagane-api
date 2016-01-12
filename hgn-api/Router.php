@@ -42,20 +42,20 @@ class Router {
 			}
 		}
 
-		$requestArray['resource'] = $requestArray[0];
+		$requestArray['resource'] = ucfirst($requestArray[0]);
 		$requestArray['method'] = $method;
 		$requestArray['request'] = $request;
-		$requestArray['uri'] = str_replace($requestArray['resource'], '', $request);
+		$requestArray['uri'] = str_replace($requestArray[0], '', $request);
 
 		return $requestArray;
 	}
 
 	function load($uri) {
 		//chequeo de existencia de uri
-		if (isset($uri[0]) && $uri[0] != '') {
-			if (file_exists($this->config['appPath'].'Resource/'.$uri[0].'.php')) {
-				include_once($this->config['appPath'].'Resource/'.$uri[0].'.php');
-				return $uri[0];
+		if (isset($uri['resource']) && $uri['resource'] != '') {
+			if (file_exists($this->config['appPath'].'Resource/'.$uri['resource'].'.php')) {
+				include_once($this->config['appPath'].'Resource/'.$uri['resource'].'.php');
+				return $uri['resource'];
 			} else {
 				//si no existe el resource
 				$this->message->appendError('error:router:load', 'Resource path not found');
