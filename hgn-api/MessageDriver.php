@@ -20,18 +20,21 @@ class Message {
 	private function __wakeup(){
 	}
 
-	function appendArray($incommingData = array()) {
+	function appendArray($arrayName, $innerData = array()) {
 		if (empty($this->data)) {
-			$this->data = $incommingData;
+			$this->data = array('message' => array( $arrayName => $innerData));
+		} elseif (empty($this->data['message'])) {
+			$this->data['message'] = array( $arrayName => $innerData);
 		} else {
-			$this->data = array_merge($this->data, $incommingData);
+			$this->data['message'] = array_merge($this->data['message'], array( $arrayName => $innerData));
 		}
+		$this->data['success'] = true;
 	}
 
 	function append($key, $data) {
 		if (empty($this->data)) {
 			$this->data = array('message' => array($key => $data));
-		} elseif(empty($this->data['message'])) {
+		} elseif (empty($this->data['message'])) {
 			$this->data['message'] = array($key => $data);
 		} else {
 			$this->data['message'] = array_merge($this->data['message'], array($key => $data));
@@ -42,7 +45,7 @@ class Message {
 	function appendError($key, $data) {
 		if (empty($this->data)) {
 			$this->data = array('error' => array($key => $data));
-		} elseif(empty($this->data['error'])) {
+		} elseif (empty($this->data['error'])) {
 			$this->data['error'] = array($key => $data);
 		} else {
 			$this->data['error'] = array_merge($this->data['error'], array($key => $data));

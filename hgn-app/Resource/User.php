@@ -2,6 +2,8 @@
 namespace Hagane\Resource;
 
 class User extends AbstractResource{
+	private $sessionidLength = 60;
+
 	function load() {
 		$this->post('/login', function() {
 			$request = json_decode(file_get_contents("php://input"));
@@ -10,7 +12,12 @@ class User extends AbstractResource{
 			$data = array('username' => $request->username, 'password' => $request->password);
 			$result = $this->db->getRow('SELECT * FROM User WHERE username=:username AND password=:password', $data);
 			if (!empty ( $result )) {
-				$this->message->append('accessToken', $this->generateSessionid($result['id']));
+				$this->message->appendArray('user', array(
+						'accessToken' => $this->generateSessionid($result['id']),
+						'id' => $result['id'],
+						'role' => $result['role']
+					)
+				);
 			} else {
 				$this->message->appendError('login:auth','usuario y/o contraseña inválidos');
 			}
