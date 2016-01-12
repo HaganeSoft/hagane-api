@@ -17,6 +17,10 @@ abstract class AbstractResource {
 
 	public function __construct($config = null){
 		$this->getNode = array();
+		$this->postNode = array();
+		$this->deleteNode = array();
+		$this->putNode = array();
+
 		$this->routeParams = array();
 		$this->config = $config;
 		$this->message = \Hagane\Message::getInstance();
