@@ -31,9 +31,10 @@ abstract class AbstractResource {
 
 	public function execute($uri) {
 		if (isset($uri['uri']) && $uri['uri'] != '') { //if uri exists
-			$path = $this->match($uri); //get uri or null
-			if (isset($path['path'])) {
-				$call = $this->{$path['methodNode']}[$path['path']]; //call to function using path
+			$methodNode = $this->matchMethod($uri);
+			$path = $this->matchPath($uri, $methodNode); //get uri or null
+			if (isset($path)) {
+				$call = $this->{$methodNode}[$path]; //call to function using path
 				$call();
 			} else {
 				$this->message->appendError('resource:execute','uri not found(404): ' . $uri['uri']);
@@ -41,29 +42,63 @@ abstract class AbstractResource {
 				die();
 			}
 		} else {
-			$this->message->appendError('resource:execute','uri not found(404): NULL');
-			echo $this->message->send();
-			die();
+			$methodNode = $this->matchMethod($uri);
+			if (array_key_exists('/', $this->{$methodNode})) {
+				$call = $this->{$methodNode}['/']; //call to function using path
+				$call();
+			} else {
+				$this->message->appendError('resource:execute','uri not found(404): NULL');
+				echo $this->message->send();
+				die();
+			}
 		}
 	}
 
-	public function match($uri) {
+	public function matchPath($uri, $methodNode) {
 		$request = explode('/', $uri['uri']);
 		$result = null;
-		$routeParams = array();
+
+		if (!empty($this->{$methodNode})) {
+			foreach ($this->{$methodNode} as $path => $f) {
+				$req = true; //flag for path attributes
+				$objectPath = explode('/', $path);
+				$objNum = count($objectPath);
+				if ($objNum == count($request)) { //if the number of attributes are not the same, dont waste CPU!
+					for ($n=0; $n < $objNum; $n++) {
+						if (substr($objectPath[$n], 0, 1) != ':') {  //ignore route parameters
+							if ($objectPath[$n] != $request[$n]) {
+								$req = false; //does not match
+							}
+						} else {
+							//add to route parameters
+							$this->routeParam[substr($objectPath[$n], 1)] = $request[$n];
+						}
+					}
+					if ($req) { //everything went good, so this is the match
+						$result = $path;
+					}
+				}
+			}//end foreach
+		}//end if is empty
+		return $result;
+	}
+
+	public function matchMethod($uri) {
+		$request = explode('/', $uri['uri']);
+		$methodNode = null;
 
 		switch ($uri['method']) {
 			case 'DELETE':
-				$result['methodNode'] = 'deleteNode';
+				$methodNode = 'deleteNode';
 				break;
 			case 'POST':
-				$result['methodNode'] = 'postNode';
+				$methodNode = 'postNode';
 				break;
 			case 'GET':
-				$result['methodNode'] = 'getNode';
+				$methodNode = 'getNode';
 				break;
 			case 'PUT':
-				$result['methodNode'] = 'putNode';
+				$methodNode = 'putNode';
 				break;
 			default:
 				$this->message->appendError('resource:match','invalid method(405)');
@@ -72,36 +107,7 @@ abstract class AbstractResource {
 				break;
 		}
 
-		if ($uri['uri'] == '/') {
-			if (array_key_exists('/', $this->{$result['methodNode']})) {
-				$result['path'] = '/';
-				return $result;
-			}
-		} else {
-			if (!empty($this->{$result['methodNode']})) {
-				foreach ($this->{$result['methodNode']} as $path => $f) {
-					$req = true; //flag for path attributes
-					$objectPath = explode('/', $path);
-					$objNum = count($objectPath);
-					if ($objNum == count($request)) { //if the number of attributes are not the same, dont waste CPU!
-						for ($n=0; $n < $objNum; $n++) {
-							if (substr($objectPath[$n], 0, 1) != ':') {  //ignore route parameters
-								if ($objectPath[$n] != $request[$n]) {
-									$req = false; //does not match
-								}
-							} else {
-								//add to route parameters
-								$this->routeParam[substr($objectPath[$n], 1)] = $request[$n];
-							}
-						}
-						if ($req) { //everything went good, so this is the match
-							$result['path'] = $path;
-						}
-					}
-				}//end foreach
-			}//end if is empty
-			return $result;
-		}
+		return $methodNode;
 	}
 
 	protected function get($path, $function) {
