@@ -20,6 +20,7 @@ class Message {
 	private function __wakeup(){
 	}
 
+	//quizas no es tan buena idea esta funcion :(
 	function appendArray($arrayName, $innerData = array()) {
 		if (empty($this->data)) {
 			$this->data = array('message' => array( $arrayName => $innerData));
