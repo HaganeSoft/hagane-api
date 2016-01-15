@@ -13,29 +13,48 @@ class User extends AbstractResource{
 			$result = $this->db->getRow('SELECT * FROM User WHERE username=:username AND password=:password', $data);
 			if (!empty ( $result )) {
 				$this->message->append('user', array(
-						'accessToken' => $this->generateSessionid($result['id']),
+						'accessToken' => $this->generateAccessToken($result['id']),
 						'id' => $result['id'],
 						'role' => $result['role']
 					)
 				);
 			} else {
-				$this->message->appendError('login:auth','usuario y/o contraseña inválidos');
+				$this->message->appendError('login','usuario y/o contraseña inválidos.');
+			}
+
+			echo $this->message->send();
+		});
+
+		$this->post('/authorize', function() {
+			$request = json_decode(file_get_contents("php://input"));
+
+			//checar par de pass y user
+			$data = array('accessToken' => $request->accessToken);
+			$result = $this->db->getRow('SELECT * FROM User WHERE accessToken=:accessToken', $data);
+			if (!empty ( $result )) {
+				$this->message->append('user', array(
+						'id' => $result['id'],
+						'role' => $result['role']
+					)
+				);
+			} else {
+				$this->message->appendError('authorize','accessToken inválido.');
 			}
 
 			echo $this->message->send();
 		});
 	}
 
-	private function generateSessionid($userId){
+	private function generateAccessToken($userId){
 		$token = $this->getToken($this->sessionidLength);
-		$data = array('sessionid' => $token);
+		$data = array('accessToken' => $token);
 
-		while ($this->db->rowCount('SELECT sessionid FROM User WHERE sessionid = :sessionid', $data) > 0) {
-			$data = array('sessionid' => $this->getToken($this->sessionidLength));
+		while ($this->db->rowCount('SELECT accessToken FROM User WHERE accessToken = :accessToken', $data) > 0) {
+			$data = array('accessToken' => $this->getToken($this->accessTokenLength));
 		}
 
 		$data['id'] = $userId;
-		$this->db->query('UPDATE User SET sessionid = :sessionid WHERE id = :id', $data);
+		$this->db->query('UPDATE User SET accessToken = :accessToken WHERE id = :id', $data);
 		return $token;
 	}
 
