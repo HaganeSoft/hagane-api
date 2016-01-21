@@ -13,7 +13,7 @@ abstract class AbstractResource {
 	protected $postNode;
 	protected $deleteNode;
 	protected $putNode;
-	protected $routeParam;
+	protected $params;
 
 	public function __construct($config = null){
 		$this->getNode = array();
@@ -21,7 +21,7 @@ abstract class AbstractResource {
 		$this->deleteNode = array();
 		$this->putNode = array();
 
-		$this->routeParams = array();
+		$this->params = array();
 		$this->config = $config;
 		$this->message = \Hagane\Message::getInstance();
 
@@ -71,7 +71,7 @@ abstract class AbstractResource {
 							}
 						} else {
 							//add to route parameters
-							$this->routeParam[substr($objectPath[$n], 1)] = $request[$n];
+							$this->params[substr($objectPath[$n], 1)] = $request[$n];
 						}
 					}
 					if ($req) { //everything went good, so this is the match

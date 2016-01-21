@@ -5,6 +5,7 @@ class User extends AbstractResource{
 	private $sessionidLength = 60;
 
 	function load() {
+		//POST routes----------------------------------------------------------
 		$this->post('/login', function() {
 			$request = json_decode(file_get_contents("php://input"));
 
@@ -51,6 +52,26 @@ class User extends AbstractResource{
 			$this->db->query('UPDATE User SET accessToken=:accessToken WHERE sessionid=:activeAccessToken', $data);
 
 			$this->message->append('logout','Successfully logged out');
+
+			echo $this->message->send();
+		});
+
+		//GET routes ----------------------------------------------------------
+		$this->get('/authorize/:accessToken', function() {
+			$accessToken = $this->params['accessToken'];
+
+			//checar par de pass y user
+			$data = array('accessToken' => $accessToken);
+			$result = $this->db->getRow('SELECT * FROM User WHERE accessToken=:accessToken', $data);
+			if (!empty ( $result )) {
+				$this->message->append('user', array(
+						'id' => $result['id'],
+						'role' => $result['role']
+					)
+				);
+			} else {
+				$this->message->appendError('authorize','accessToken inválido.');
+			}
 
 			echo $this->message->send();
 		});
