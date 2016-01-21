@@ -3,7 +3,6 @@ namespace Hagane;
 
 include_once('AbstractResource.php');
 include_once('Database.php');
-include_once('Authentication.php');
 include_once('MessageDriver.php');
 include_once('Router.php');
 
