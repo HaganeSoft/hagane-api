@@ -23,7 +23,7 @@ if (!empty($conektaPath)) {
 }
 
 if ($hgConekta && !empty($conektaApiKey)) {
-	Conekta::setApiKey($conektaApiKey);
+	\Conekta::setApiKey($conektaApiKey);
 } else {
 	$this->message->appendError('module:conekta', 'Conekta api key is NULL');
 }
