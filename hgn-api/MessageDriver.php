@@ -43,6 +43,9 @@ class Message {
 
 	function send() {
 		header("Content-type: application/json; charset=utf-8");
+		if (!empty($this->data['error']) && !empty($this->data['message'])) {
+			unset($this->data['success']);
+		}
 		return json_encode($this->data);
 	}
 }

@@ -32,14 +32,13 @@ class App {
 			include_once('Modules/'.$module.'.php');
 		}
 
-		// include_once($HaganeInit['appFolderDepth'].$HaganeInit['appFolderName'].'/Model/UserModel.php');
-
 		$router = new \Hagane\Router($config);
 		$uri = $router->parse(); // gets an array being 0:resource and so on.
 		$resourceName = $router->load($uri); // loads the resource name if it exist else its a false
 
-		$RerosurceClass = '\\Hagane\\Resource\\'.$uri['resource'];
+		$RerosurceClass = '\\Hagane\\Resource\\'.$resourceName;
 		if ($resourceName) {
+			//var_dump($resourceName);
 			$resource = new $RerosurceClass($config);
 			$resource->load();
 			$resource->execute($uri);
@@ -49,11 +48,9 @@ class App {
 			echo $this->message->send();
 			die();
 		}
-
-		// $ResourceDriver = new \Hagane\ResourceDriver($config->getConf());
-		// $ResourceDriver->execute($params);  //params >>> controllerName, action and get params
 	}
 
+	// function executeURI
 }
 
 ?>

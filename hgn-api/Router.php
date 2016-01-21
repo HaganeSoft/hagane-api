@@ -16,31 +16,38 @@ class Router {
 		$this->message = \Hagane\Message::getInstance();
 	}
 
-	function parse() {
-		//parseo de URI
-		$request = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
+	function parse($innerCall = null) {
+		if (empty($innerCall)) {
+			//parseo de URI
+			$request = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 
-		if ($this->config['document_root'] != '/') {
-			$request = str_replace($this->config['document_root'], '', $request);
-		} else {
-			$request = substr($request, 1);
-		}
-		if ($tmp = $this->match((string)$request)) {
-			$request = $tmp;
-		}
-		$requestArray = explode("/", $request);
-
-		//check method
-		$method = $_SERVER['REQUEST_METHOD'];
-		if ($method == 'POST' && array_key_exists('HTTP_X_HTTP_METHOD', $_SERVER)) {
-			if ($_SERVER['HTTP_X_HTTP_METHOD'] == 'DELETE') {
-				$method = 'DELETE';
-			} else if ($_SERVER['HTTP_X_HTTP_METHOD'] == 'PUT') {
-				$method = 'PUT';
+			if ($this->config['document_root'] != '/') {
+				$request = str_replace($this->config['document_root'], '', $request);
 			} else {
-				throw new Exception("Unexpected Header");
+				$request = substr($request, 1);
 			}
+			if ($tmp = $this->match((string)$request)) {
+				$request = $tmp;
+			}
+			$requestArray = explode("/", $request);
+
+			//check method
+			$method = $_SERVER['REQUEST_METHOD'];
+			if ($method == 'POST' && array_key_exists('HTTP_X_HTTP_METHOD', $_SERVER)) {
+				if ($_SERVER['HTTP_X_HTTP_METHOD'] == 'DELETE') {
+					$method = 'DELETE';
+				} else if ($_SERVER['HTTP_X_HTTP_METHOD'] == 'PUT') {
+					$method = 'PUT';
+				} else {
+					throw new Exception("Unexpected Header");
+				}
+			}
+		} else {
+			$request = $innerCall['uri'];
+			$requestArray = explode("/", $innerCall['uri']);
+			$method = $innerCall['method'];
 		}
+
 
 		$requestArray['resource'] = ucfirst($requestArray[0]);
 		$requestArray['method'] = $method;
@@ -60,6 +67,11 @@ class Router {
 				//si no existe el resource
 				$this->message->appendError('error:router:load', 'Resource path not found');
 				return false;
+			}
+		} else if($uri['resource'] == '') {
+			if(file_exists($this->config['appPath'].'Resource/Index.php')) {
+				include_once($this->config['appPath'].'Resource/Index.php');
+				return 'Index';
 			}
 		} else {
 			$this->message->appendError('error:router:load', 'Resource request not found');
