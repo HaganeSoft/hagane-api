@@ -9,7 +9,7 @@ class Index extends AbstractResource{
 		});
 
 		$this->get('/caller', function() {
-			$this->message->append('i am the call-e', 'mothafucka');
+			$this->message->append('i am the call-e', 'calleee');
 			echo $this->message->send();
 		});
 
