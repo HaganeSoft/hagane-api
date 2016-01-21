@@ -43,6 +43,17 @@ class User extends AbstractResource{
 
 			echo $this->message->send();
 		});
+
+		$this->post('/logout', function() {
+			$request = json_decode(file_get_contents("php://input"));
+
+			$data = array('accessToken' => null, 'activeAccessToken' => $request->accessToken);
+			$this->db->query('UPDATE User SET accessToken=:accessToken WHERE sessionid=:activeAccessToken', $data);
+
+			$this->message->append('logout','Successfully logged out');
+
+			echo $this->message->send();
+		});
 	}
 
 	private function generateAccessToken($userId){

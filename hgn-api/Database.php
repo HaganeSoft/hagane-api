@@ -66,7 +66,11 @@ class Database {
 
 	function query($queryString, $data = null){
 		$statement = $this->pdo->prepare($queryString);
-		$statement->execute($data);
+		$querySuccess = $statement->execute($data);
+
+		if (!$querySuccess) {
+			$this->_message->appendError('database:query','Error querying database.');
+		}
 
 		$result = $statement->fetchAll(\PDO::FETCH_ASSOC);
 		return $result;
