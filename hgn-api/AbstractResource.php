@@ -113,7 +113,7 @@ abstract class AbstractResource {
 	public function call($method, $uri) {
 		$app = \Hagane\App::getInstance();
 		ob_start();
-		$app->call('GET', '/Index/caller');
+		$app->call($method, $uri);
 		return ob_get_clean();
 	}
 
