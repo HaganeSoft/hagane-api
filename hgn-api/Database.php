@@ -20,11 +20,11 @@ class Database {
 	protected function  __construct(){
 	}
 	private function __clone(){
-    }
-    private function __wakeup(){
-    }
+	}
+	private function __wakeup(){
+	}
 
-    public function  setDatabase($config){
+	public function setDatabase($config){
 		$this->active = false;
 		$this->config = $config->getConf();
 		$this->_message = \Hagane\Message::getInstance();

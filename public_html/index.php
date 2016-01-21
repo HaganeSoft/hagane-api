@@ -24,7 +24,8 @@ $indexPath = dirname(__FILE__);
 
 include_once($HaganeInit['appFolderDepth'].'hgn-api/init.php');
 
-$app = new \Hagane\App();
+$app = \Hagane\App::getInstance();
+//$app = new \Hagane\App();
 $app->start($HaganeInit);
 // phpinfo();
 ?>

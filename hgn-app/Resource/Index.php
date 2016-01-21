@@ -8,8 +8,15 @@ class Index extends AbstractResource{
 			echo $this->message->send();
 		});
 
-		$this->get('/prueba/:id', function() {
-			$this->message->append('idparam', $this->routeParam['id']);
+		$this->get('/caller', function() {
+			$this->message->append('i am the call-e', 'mothafucka');
+			echo $this->message->send();
+		});
+
+		$this->get('/innercall', function() {
+			$this->message->append('I am the one who knocks', 'walter white');
+			$app = \Hagane\App::getInstance();
+			$app->call('GET', '/Index/caller');
 			echo $this->message->send();
 		});
 	}

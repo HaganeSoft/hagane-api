@@ -21,16 +21,6 @@ class Router {
 			//parseo de URI
 			$request = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 
-			if ($this->config['document_root'] != '/') {
-				$request = str_replace($this->config['document_root'], '', $request);
-			} else {
-				$request = substr($request, 1);
-			}
-			if ($tmp = $this->match((string)$request)) {
-				$request = $tmp;
-			}
-			$requestArray = explode("/", $request);
-
 			//check method
 			$method = $_SERVER['REQUEST_METHOD'];
 			if ($method == 'POST' && array_key_exists('HTTP_X_HTTP_METHOD', $_SERVER)) {
@@ -44,9 +34,18 @@ class Router {
 			}
 		} else {
 			$request = $innerCall['uri'];
-			$requestArray = explode("/", $innerCall['uri']);
 			$method = $innerCall['method'];
 		}
+
+		if ($this->config['document_root'] != '/') {
+			$request = str_replace($this->config['document_root'], '', $request);
+		} else {
+			$request = substr($request, 1);
+		}
+		if ($tmp = $this->match((string)$request)) {
+			$request = $tmp;
+		}
+		$requestArray = explode("/", $request);
 
 
 		$requestArray['resource'] = ucfirst($requestArray[0]);
