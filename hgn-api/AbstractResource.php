@@ -128,6 +128,10 @@ abstract class AbstractResource {
 				$this->message->appendError('acceso denegado', false);
 				return false;
 			}
+		} else {
+			$this->message->deleteMessage();
+			$this->message->appendError('acceso denegado', false);
+			return false;
 		}
 	}
 
