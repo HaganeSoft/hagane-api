@@ -117,7 +117,7 @@ abstract class AbstractResource {
 		return ob_get_clean();
 	}
 
-	public function roles($accessToken, $roles = array()) {
+	public function role($accessToken, $roles = array()) {
 		if (!empty($roles) && !empty($accessToken)) {
 			$request = $this->call('GET', '/User/authorize/'.$accessToken);
 			$request = json_decode($request);

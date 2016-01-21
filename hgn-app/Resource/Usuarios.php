@@ -7,9 +7,9 @@ class Usuarios extends AbstractResource{
 			$accessToken = !empty($_GET['accessToken']) ? $_GET['accessToken'] : null;
 			$roles = array('Administrador');
 
-			if ($this->roles($accessToken, $roles)) {
+			if ($this->role($accessToken, $roles)) {
 				$data = array();
-				$result = $this->db->query('SELECT * FROM User', $data);
+				$result = $this->db->query('SELECT id, username, role FROM User', $data);
 				$this->message->append('usuarios', $result);
 			}
 
