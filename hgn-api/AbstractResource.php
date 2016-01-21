@@ -110,6 +110,13 @@ abstract class AbstractResource {
 		return $methodNode;
 	}
 
+	public function call($method, $uri) {
+		$app = \Hagane\App::getInstance();
+		ob_start();
+		$app->call('GET', '/Index/caller');
+		return ob_get_clean();
+	}
+
 	protected function get($path, $function) {
 		$this->getNode = array_merge($this->getNode, array($path => $function));
 	}

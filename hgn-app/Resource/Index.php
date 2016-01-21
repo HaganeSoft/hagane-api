@@ -14,9 +14,10 @@ class Index extends AbstractResource{
 		});
 
 		$this->get('/innercall', function() {
+			$resp = $this->call('GET', '/Index/caller');
+			$this->message->deleteMessage();
+
 			$this->message->append('I am the one who knocks', 'walter white');
-			$app = \Hagane\App::getInstance();
-			$app->call('GET', '/Index/caller');
 			echo $this->message->send();
 		});
 	}

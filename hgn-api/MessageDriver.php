@@ -41,6 +41,14 @@ class Message {
 		}
 	}
 
+	function deleteMessage() {
+		if (!empty($this->data)) {
+			if (!empty($this->data['message'])) {
+				unset($this->data['message']);
+			}
+		}
+	}
+
 	function send() {
 		header("Content-type: application/json; charset=utf-8");
 		if (!empty($this->data['error']) && !empty($this->data['message'])) {
