@@ -117,6 +117,20 @@ abstract class AbstractResource {
 		return ob_get_clean();
 	}
 
+	public function roles($accessToken, $roles = array()) {
+		if (!empty($roles) && !empty($accessToken)) {
+			$request = $this->call('GET', '/User/authorize/'.$accessToken);
+			$request = json_decode($request);
+			if (!empty($request->success) && in_array($request->message->user->role, $roles)) {
+				return true;
+			} else {
+				$this->message->deleteMessage();
+				$this->message->appendError('acceso denegado', false);
+				return false;
+			}
+		}
+	}
+
 	protected function get($path, $function) {
 		$this->getNode = array_merge($this->getNode, array($path => $function));
 	}
