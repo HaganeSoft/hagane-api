@@ -122,7 +122,8 @@ abstract class AbstractResource {
 			$request = $this->call('GET', '/User/authorize/'.$accessToken);
 			$request = json_decode($request);
 			if (!empty($request->success) && in_array($request->message->user->role, $roles)) {
-				return true;
+				$this->message->deleteMessage();
+				return $request->message->user;
 			} else {
 				$this->message->deleteMessage();
 				$this->message->appendError('acceso denegado', false);

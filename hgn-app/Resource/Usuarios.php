@@ -16,6 +16,20 @@ class Usuarios extends AbstractResource{
 			echo $this->message->send();
 		});
 
+		$this->get('/menu', function() {
+			$accessToken = !empty($_GET['accessToken']) ? $_GET['accessToken'] : null;
+			$roles = array('Administrador');
+			$user = $this->role($accessToken, $roles);
+
+			if (!empty($user)) {
+				$data = array('role' => $user->role);
+				$result = $this->db->query('SELECT json FROM RoleMenu WHERE role=:role', $data);
+				$this->message->append('menu', $result);
+			}
+
+			echo $this->message->send();
+		});
+
 		$this->get('/pago', function() {
 			$charge = \Conekta_Charge::create(array(
 				'description'=> 'Stogies',
