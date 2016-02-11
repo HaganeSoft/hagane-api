@@ -59,6 +59,7 @@ class Database {
 			$lastId = $this->pdo->lastInsertId();
 		} else {
 			$lastId = null;
+			$this->_message->appendError('database:query', $statement->errorInfo());
 		}
 
 		return $lastId;
@@ -69,7 +70,7 @@ class Database {
 		$querySuccess = $statement->execute($data);
 
 		if (!$querySuccess) {
-			$this->_message->appendError('database:query','Error querying database.');
+			$this->_message->appendError('database:query', $statement->errorInfo());
 		}
 
 		$result = $statement->fetchAll(\PDO::FETCH_ASSOC);
