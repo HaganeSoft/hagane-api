@@ -17,10 +17,10 @@ class Config {
 				'db_engine' => 'mysql',
 				'db_server' => 'localhost',
 				'db_database' => 'basket',
-				'db_user' => 'root',
-				'db_password' => '',
+				'db_user' => 'dev',
+				'db_password' => 'Bicarbonato1!',
 				'session_time' => 3600,
-				'conecta_api_key' => 'key_eYvWV7gSDkNYXsmr',
+				'conekta_api_key' => 'key_eYvWV7gSDkNYXsmr',
 				'document_root' => '/'
 			);
 	}

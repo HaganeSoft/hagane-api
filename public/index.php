@@ -12,7 +12,7 @@ $HaganeInit = array(
 	'appFolderDepth' => '../'
 );
 
-include_once($HaganeInit['appFolderDepth'].'hglib/init.php');
+include_once($HaganeInit['appFolderDepth'].'lib/init.php');
 
 $app = \Hagane\App::getInstance();
 $app->start($HaganeInit);
