@@ -21,6 +21,7 @@ class Config {
 				'db_password' => 'Bicarbonato1!',
 				'session_time' => 3600,
 				'conekta_api_key' => 'key_eYvWV7gSDkNYXsmr',
+				'conekta_path' => '../externalLibs/conekta-php/lib/Conekta.php',
 				'document_root' => '/'
 			);
 	}
