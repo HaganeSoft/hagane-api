@@ -8,18 +8,9 @@ class Index extends AbstractResource{
 			echo $this->message->send();
 		});
 
-		$this->get('/caller', function() {
-			$this->message->append('i am the call-e', 'calleee');
-			echo $this->message->send();
-		});
-
-		$this->get('/innercall', function() {
-			$resp = $this->call('GET', '/Index/caller');
-			$this->message->deleteMessage();
-
-			$this->message->append('I am the one who knocks', 'walter white');
-			echo $this->message->send();
-		});
+		include_once($this->config->getConf()['appPath'].'/class/hello.php');
+		$cl = new \Hagane\Resource\hello();
+		$this->get('/hola', &$cl->world());
 	}
 }
 
