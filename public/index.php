@@ -8,11 +8,11 @@ ini_set('display_errors', 1);
 // );
 
 $HaganeInit = array(
-	'appFolderName' => 'hgn-app',
+	'appFolderName' => 'app',
 	'appFolderDepth' => '../'
 );
 
-include_once($HaganeInit['appFolderDepth'].'hgn-api/init.php');
+include_once($HaganeInit['appFolderDepth'].'hglib/init.php');
 
 $app = \Hagane\App::getInstance();
 $app->start($HaganeInit);
