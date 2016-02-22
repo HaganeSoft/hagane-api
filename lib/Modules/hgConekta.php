@@ -7,7 +7,6 @@ $conektaApiKey = !empty($this->config->getConf()['conekta_api_key']) ? $this->co
 $hgConekta = false;
 
 if (!empty($conektaPath)) {
-		echo $this->config->appDepth.$conektaPath;
 	if (file_exists($this->config->appDepth.$conektaPath)) {
 		require_once($this->config->appDepth.$conektaPath);
 		$hgConekta = true;
