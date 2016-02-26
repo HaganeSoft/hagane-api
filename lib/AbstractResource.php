@@ -35,9 +35,9 @@ abstract class AbstractResource {
 			$path = $this->matchPath($uri, $methodNode); //get uri or null
 			if (isset($path)) {
 				$call = $this->{$methodNode}[$path]; //call to function using path
-				if (gettype($call) == 'string') {
+				//if (gettype($call) == 'string') {
 						$call();
-				}
+				//}
 			} else {
 				$this->message->appendError('resource:execute','uri not found(404): ' . $uri['method'] . ' ' .$uri['request']);
 				echo $this->message->send();
