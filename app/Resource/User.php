@@ -1,7 +1,7 @@
 <?php
 namespace Hagane\Resource;
 
-class User extends AbstractResource{
+class user extends AbstractResource{
 	private $sessionidLength = 60;
 
 	function load() {
@@ -11,7 +11,7 @@ class User extends AbstractResource{
 
 			//checar par de pass y user
 			$data = array('username' => $request->username, 'password' => $request->password);
-			$result = $this->db->getRow('SELECT * FROM User WHERE username=:username AND password=:password', $data);
+			$result = $this->db->getRow('SELECT * FROM user WHERE username=:username AND password=:password', $data);
 			if (!empty ( $result )) {
 				$this->message->append('user', array(
 						'accessToken' => $this->generateAccessToken($result['id']),
@@ -31,7 +31,7 @@ class User extends AbstractResource{
 
 			//checar par de pass y user
 			$data = array('accessToken' => $request->accessToken);
-			$result = $this->db->getRow('SELECT * FROM User WHERE accessToken=:accessToken', $data);
+			$result = $this->db->getRow('SELECT * FROM user WHERE accessToken=:accessToken', $data);
 			if (!empty ( $result )) {
 				$this->message->append('user', array(
 						'id' => $result['id'],
@@ -49,7 +49,7 @@ class User extends AbstractResource{
 			$request = json_decode(file_get_contents("php://input"));
 
 			$data = array('accessToken' => null, 'activeAccessToken' => $request->accessToken);
-			$this->db->query('UPDATE User SET accessToken=:accessToken WHERE sessionid=:activeAccessToken', $data);
+			$this->db->query('UPDATE user SET accessToken=:accessToken WHERE sessionid=:activeAccessToken', $data);
 
 			$this->message->append('logout','Successfully logged out');
 
@@ -62,7 +62,7 @@ class User extends AbstractResource{
 
 			//checar par de pass y user
 			$data = array('accessToken' => $accessToken);
-			$result = $this->db->getRow('SELECT * FROM User WHERE accessToken=:accessToken', $data);
+			$result = $this->db->getRow('SELECT * FROM user WHERE accessToken=:accessToken', $data);
 			if (!empty ( $result )) {
 				$this->message->append('user', array(
 						'id' => $result['id'],
@@ -81,12 +81,12 @@ class User extends AbstractResource{
 		$token = $this->getToken($this->sessionidLength);
 		$data = array('accessToken' => $token);
 
-		while ($this->db->rowCount('SELECT accessToken FROM User WHERE accessToken = :accessToken', $data) > 0) {
+		while ($this->db->rowCount('SELECT accessToken FROM user WHERE accessToken = :accessToken', $data) > 0) {
 			$data = array('accessToken' => $this->getToken($this->accessTokenLength));
 		}
 
 		$data['id'] = $userId;
-		$this->db->query('UPDATE User SET accessToken = :accessToken WHERE id = :id', $data);
+		$this->db->query('UPDATE user SET accessToken = :accessToken WHERE id = :id', $data);
 		return $token;
 	}
 

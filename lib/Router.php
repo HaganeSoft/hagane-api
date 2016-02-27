@@ -14,6 +14,14 @@ class Router {
 		$this->config = $config->getConf();
 		$this->routes = $config->getRoutes();
 		$this->message = \Hagane\Message::getInstance();
+
+		//Defined routes by HaganeAPI
+		//they are overrided by the config if there is the same key.
+		$predefinedRoutes = array(
+			'/hagane' => '/User/login'
+		);
+		$this->routes = $config->getRoutes();
+		$this->routes = array_merge($this->routes, $predefinedRoutes);
 	}
 
 	function parse($innerCall = null) {
@@ -42,8 +50,11 @@ class Router {
 		} else {
 			$request = substr($request, 1);
 		}
-		if ($tmp = $this->match((string)$request)) {
-			$request = $tmp;
+		if ($matchedUri = $this->match((string)$request)) {
+			$request = $matchedUri;
+			if($request[0] == '/') {
+				$request = substr($request, 1);
+			}
 		}
 		$requestArray = explode("/", $request);
 
@@ -78,8 +89,13 @@ class Router {
 		}
 	}
 
-	function match($request){
-		return array_key_exists ($request, $this->routes) ? $this->routes[$request] : null;
+	function match($request) {	
+		$match = array_key_exists ($request, $this->routes) ? $this->routes[$request] : null;
+		if(empty($match)) {
+			$request = '/'.$request; 
+			$match = array_key_exists ($request, $this->routes) ? $this->routes[$request] : null;
+		}
+		return $match;
 	}
 }
 
