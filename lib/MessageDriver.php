@@ -28,7 +28,6 @@ class Message {
 		} else {
 			$this->data['message'] = array_merge($this->data['message'], array($key => $data));
 		}
-		$this->data['success'] = true;
 	}
 
 	function appendError($key, $data) {
@@ -51,6 +50,8 @@ class Message {
 
 	function send() {
 		header("Content-type: application/json; charset=utf-8");
+		$this->data['success'] = true;
+		
 		if (!empty($this->data['error'])) {
 			unset($this->data['success']);
 		}
