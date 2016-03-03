@@ -73,7 +73,8 @@ class Database {
 			$this->_message->appendError('database:query', $statement->errorInfo());
 		}
 
-		$result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+		$assocArray = $statement->fetchAll(\PDO::FETCH_ASSOC);
+		$result = $this->camelCaseKeys($assocArray); 
 		return $result;
 	}
 
@@ -81,8 +82,9 @@ class Database {
 		$statement = $this->pdo->prepare($queryString. ' LIMIT 1 ');
 		$statement->execute($data);
 
-		$result = $statement->fetch(\PDO::FETCH_ASSOC);
-		return $result;
+		$assocArray = $statement->fetchAll(\PDO::FETCH_ASSOC);
+		$result = $this->camelCaseKeys($assocArray);
+		return $result[0];
 	}
 
 	function rowCount($queryString, $data = null){
@@ -90,6 +92,22 @@ class Database {
 		$statement->execute($data);
 
 		return $statement->rowCount();
+	}
+
+	public function camelCaseKeys($array, $arrayHolder = array()) {
+		$camelCaseArray = !empty($arrayHolder) ? $arrayHolder : array();
+		foreach ($array as $key => $val) {
+			$newKey = @explode('_', $key);
+			array_walk($newKey, create_function('&$v', '$v = ucwords($v);'));
+			$newKey = @implode('', $newKey);
+			$newKey{0} = strtolower($newKey{0});
+			if (!is_array($val)) {
+				$camelCaseArray[$newKey] = $val;
+			} else {
+				$camelCaseArray[$newKey] = @$this->camelCaseKeys($val, $camelCaseArray[$newKey]);
+			}
+		}
+		return $camelCaseArray;
 	}
 }
 

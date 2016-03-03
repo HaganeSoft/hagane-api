@@ -29,7 +29,11 @@ class App {
 		include_once($HaganeInit['appFolderDepth'].$HaganeInit['appFolderName'].'/config/config.php'); //llama a la configuracion de la carpeta de la app
 
 		$this->config = new \Hagane\Config($HaganeInit);
-
+		//timezone
+		if(array_key_exists('timezone', $this->config->getConf())) {
+			date_default_timezone_set($this->config->getConf()['timezone']);
+		}
+		
 		//inicializacion de modulos
 		foreach ($this->config->getModules() as $module) {
 			include_once('Modules/'.$module.'.php');
