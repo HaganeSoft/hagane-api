@@ -61,11 +61,11 @@ class Database {
 		return $this->active;
 	}
 
-	function insert($queryString, $data = null){
+	function insert($queryString, $data = null, $sequence = null){
 		$statement = $this->pdo->prepare($queryString);
 
 		if ($statement->execute($data)) {
-			$lastId = $this->pdo->lastInsertId();
+			$lastId = $this->pdo->lastInsertId($sequence);
 		} else {
 			$lastId = null;
 			$this->_message->appendError('database:query', $statement->errorInfo());
