@@ -38,6 +38,15 @@ class Database {
 					$this->_message->appendError('database:setdatabase','exception: ' . $e->getMessage());
 				}
 			}
+			//POSTGRES
+			if (strcasecmp($this->config['db_engine'], 'postgres') == 0) {
+				try {
+					$this->pdo = new \PDO("pgsql:host=".$this->config['db_server'].";dbname=".$this->config['db_database'].";user=".$this->config['db_user'].";password=".$this->config['db_password']);
+					$this->active = true;
+				} catch (\PDOException $e) {
+					$this->_message->appendError('database:setdatabase','exception: ' . $e->getMessage());
+				}
+			}
 		} else {
 			//destruye
 			$this->_message->appendError('database:setdatabase','undeclared db_engine');
