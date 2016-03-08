@@ -84,7 +84,11 @@ class Database {
 
 		$assocArray = $statement->fetchAll(\PDO::FETCH_ASSOC);
 		$result = $this->camelCaseKeys($assocArray);
-		return $result[0];
+		if(empty($result[0])){
+			return null;
+		} else {
+			return $result[0];
+		}
 	}
 
 	function rowCount($queryString, $data = null){
