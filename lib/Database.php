@@ -83,7 +83,7 @@ class Database {
 		}
 
 		$assocArray = $statement->fetchAll(\PDO::FETCH_ASSOC);
-		$result = $this->camelCaseKeys($assocArray); 
+		$result = $this->camelCaseKeys($assocArray);
 		return $result;
 	}
 
@@ -107,6 +107,10 @@ class Database {
 		return $statement->rowCount();
 	}
 
+	// Convert under_score type array's keys to camelCase type array's keys
+	// @param   array   $array          array to convert
+	// @param   array   $arrayHolder    parent array holder for recursive array
+	// @return  array   camelCase array
 	public function camelCaseKeys($array, $arrayHolder = array()) {
 		$camelCaseArray = !empty($arrayHolder) ? $arrayHolder : array();
 		foreach ($array as $key => $val) {

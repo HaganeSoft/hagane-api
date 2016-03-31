@@ -143,6 +143,25 @@ abstract class AbstractResource {
 		}
 	}
 
+	// Convert camelCase type array's keys to under_score+lowercase type array's keys
+	// @param   array   $array          array to convert
+	// @param   array   $arrayHolder    parent array holder for recursive array
+	// @return  array   under_score array
+	public function underscoreKeys($array, $arrayHolder = array()) {
+		$underscoreArray = !empty($arrayHolder) ? $arrayHolder : array();
+		foreach ($array as $key => $val) {
+			$newKey = preg_replace('/[A-Z]/', '_$0', $key);
+			$newKey = strtolower($newKey);
+			$newKey = ltrim($newKey, '_');
+			if (!is_array($val)) {
+				$underscoreArray[$newKey] = $val;
+			} else {
+				$underscoreArray[$newKey] = $this->underscoreKeys($val, $underscoreArray[$newKey]);
+			}
+		}
+		return $underscoreArray;
+	}
+
 	protected function get($path, $function) {
 		$this->getNode = array_merge($this->getNode, array($path => $function));
 	}
