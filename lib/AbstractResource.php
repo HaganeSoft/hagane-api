@@ -118,12 +118,19 @@ abstract class AbstractResource {
 	}
 
 	public function role($accessToken, $roles = array()) {
-		if (!empty($roles) && !empty($accessToken)) {
+		if (!empty($accessToken)) {
 			$request = $this->call('GET', '/User/authorize/'.$accessToken);
 			$request = json_decode($request);
-			if (!empty($request->success) && in_array($request->message->user->role, $roles)) {
+			if (!empty($request->success)) {
 				$this->message->deleteMessage();
-				return $request->message->user;
+				if (!empty($roles) && in_array($request->message->user->role, $roles)) {
+					return $request->message->user;
+				} else if(empty($roles)){
+					return $request->message->user;
+				} else {
+					$this->message->appendError('acceso denegado', false);
+					return false;
+				}
 			} else {
 				$this->message->deleteMessage();
 				$this->message->appendError('acceso denegado', false);
