@@ -32,8 +32,10 @@ class App {
 		//timezone
 		if(array_key_exists('timezone', $this->config->getConf())) {
 			date_default_timezone_set($this->config->getConf()['timezone']);
+		} else {
+			date_default_timezone_set('America/Monterrey');
 		}
-		
+
 		//inicializacion de modulos
 		foreach ($this->config->getModules() as $module) {
 			include_once('Modules/'.$module.'.php');
