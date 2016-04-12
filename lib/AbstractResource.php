@@ -99,6 +99,7 @@ abstract class AbstractResource {
 				break;
 			case 'PUT':
 				$methodNode = 'putNode';
+				$this->message->appendError('status','PUT method is deprecated');
 				break;
 			default:
 				$this->message->appendError('resource:match','invalid method(405)');
