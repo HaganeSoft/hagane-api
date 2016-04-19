@@ -118,7 +118,7 @@ abstract class AbstractResource {
 		return ob_get_clean();
 	}
 
-	public function role($accessToken, $roles = array()) {
+	public function role($accessToken, $roles = array(), $verbose = true) {
 		if (!empty($accessToken)) {
 			$request = $this->call('GET', '/User/authorize/'.$accessToken);
 			$request = json_decode($request);
@@ -128,18 +128,24 @@ abstract class AbstractResource {
 					return $request->message->user;
 				} else if(empty($roles)){
 					return $request->message->user;
-				} else {
+				} else if($verbose) {
 					$this->message->appendError('acceso denegado', false);
 					return false;
+				} else {
+					return false;
 				}
-			} else {
+			} else if($verbose){
 				$this->message->deleteMessage();
 				$this->message->appendError('acceso denegado', false);
 				return false;
+			} else {
+				return false;
 			}
-		} else {
+		} else if($verbose){
 			$this->message->deleteMessage();
 			$this->message->appendError('acceso denegado', false);
+			return false;
+		} else {
 			return false;
 		}
 	}
