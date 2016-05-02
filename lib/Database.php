@@ -66,6 +66,9 @@ class Database {
 
 		if ($statement->execute($data)) {
 			$lastId = $this->pdo->lastInsertId($sequence);
+			if ($sequence == null) {
+				$lastId = true;
+			}
 		} else {
 			$lastId = null;
 			$this->_message->appendError('database:query', $statement->errorInfo());
