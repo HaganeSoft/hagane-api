@@ -91,7 +91,11 @@ class Database {
 	}
 
 	function getRow($queryString, $data = null){
-		$statement = $this->pdo->prepare($queryString. ' LIMIT 1 ');
+		if(substr($queryString, -1) == ';'){
+			$queryString = substr($queryString, 0, -1);
+		}
+
+		$statement = $this->pdo->prepare($queryString. ' LIMIT 1;');
 		$statement->execute($data);
 
 		$assocArray = $statement->fetchAll(\PDO::FETCH_ASSOC);
