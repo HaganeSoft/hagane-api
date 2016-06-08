@@ -90,6 +90,17 @@ class Database {
 		return $result;
 	}
 
+	function update($queryString, $data = null){
+		$statement = $this->pdo->prepare($queryString);
+		$querySuccess = $statement->execute($data);
+
+		if (!$querySuccess) {
+			$this->_message->appendError('database:query', $statement->errorInfo());
+		}
+
+		return $querySuccess;
+	}
+
 	function getRow($queryString, $data = null){
 		if(substr($queryString, -1) == ';'){
 			$queryString = substr($queryString, 0, -1);
