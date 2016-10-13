@@ -6,6 +6,8 @@ include_once('Database.php');
 include_once('MessageDriver.php');
 include_once('Router.php');
 
+include_once('Load/Loader.php');
+
 class App {
 	private static $instance;
 	public $config;
@@ -41,6 +43,11 @@ class App {
 			include_once('Modules/'.$module.'.php');
 		}
 
+		//le da a load las configuraciones
+		if (class_exists('\\Hagane\\Load\\Loader')) {
+			\Hagane\Load\Loader::setConfig($this->config->getConf());
+		}
+
 		$this->enableCORS();
 		$this->call();
 	}
@@ -62,7 +69,7 @@ class App {
 		$RerosurceClass = '\\Hagane\\Resource\\'.$resourceName;
 		if ($resourceName) {
 			//var_dump($resourceName);
-			$resource = new $RerosurceClass($this->config);
+			$resource = new $RerosurceClass($this->config->getConf());
 			$resource->load();
 			$resource->execute($uri);
 		} else {

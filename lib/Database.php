@@ -26,7 +26,7 @@ class Database {
 
 	public function setDatabase($config){
 		$this->active = false;
-		$this->config = $config->getConf();
+		$this->config = $config;
 		$this->_message = \Hagane\Message::getInstance();
 
 		if (isset($this->config['db_engine'])) {
