@@ -1,12 +1,11 @@
 <?php
 namespace Hagane;
 
-include_once('AbstractResource.php');
-include_once('Database.php');
-include_once('MessageDriver.php');
-include_once('Router.php');
-
-include_once('Load/Loader.php');
+use \Hagane\Resource\AbstractResource;
+use \Hagane\Database;
+use \Hagane\Message;
+use \Hagane\Router;
+use \Hagane\Load\Loader;
 
 class App {
 	private static $instance;

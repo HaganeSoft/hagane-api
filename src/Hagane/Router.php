@@ -5,6 +5,8 @@
 
 namespace Hagane;
 
+use \Hagane\Message;
+
 class Router {
 	private $config = array();
 	private $routes = array();
@@ -13,7 +15,7 @@ class Router {
 	function __construct(&$config){
 		$this->config = $config->getConf();
 		$this->routes = $config->getRoutes();
-		$this->message = \Hagane\Message::getInstance();
+		$this->message = Message::getInstance();
 	}
 
 	function parse($innerCall = null) {
