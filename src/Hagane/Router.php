@@ -9,12 +9,12 @@ use \Hagane\Message;
 
 class Router {
 	private $config = array();
-	private $routes = array();
+	// private $routes = array();
 	private $message;
 
 	function __construct(&$config){
-		$this->config = $config->getConf();
-		$this->routes = $config->getRoutes();
+		$this->config = $config;
+		// $this->routes = $config->getRoutes();
 		$this->message = Message::getInstance();
 	}
 
@@ -44,9 +44,9 @@ class Router {
 		} else {
 			$request = substr($request, 1);
 		}
-		if ($tmp = $this->match((string)$request)) {
-			$request = $tmp;
-		}
+		// if ($tmp = $this->match((string)$request)) {
+		// 	$request = $tmp;
+		// }
 		$requestArray = explode("/", $request);
 
 
@@ -60,6 +60,7 @@ class Router {
 
 	function load($uri) {
 		//chequeo de existencia de uri
+
 		if (isset($uri['resource']) && $uri['resource'] != '') {
 			if (file_exists($this->config['appPath'].'Resource/'.$uri['resource'].'.php')) {
 				include_once($this->config['appPath'].'Resource/'.$uri['resource'].'.php');
@@ -80,9 +81,9 @@ class Router {
 		}
 	}
 
-	function match($request){
-		return array_key_exists ($request, $this->routes) ? $this->routes[$request] : null;
-	}
+	// function match($request){
+	// 	return array_key_exists ($request, $this->routes) ? $this->routes[$request] : null;
+	// }
 }
 
 ?>

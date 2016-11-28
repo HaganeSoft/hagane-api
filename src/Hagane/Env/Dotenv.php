@@ -3,8 +3,6 @@
 namespace Hagane\Env;
 
 /**
-
-// Gracias al repo de vlucas/phpdotenv  por una introduccion a los dot env
  * This is the dotenv class.
  *
  * It's responsible for loading a `.env` file in the given directory and

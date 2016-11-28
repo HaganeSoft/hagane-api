@@ -26,25 +26,13 @@ class App {
 	private function __wakeup(){
 	}
 
-	function start($HaganeInit = array()) {
-		include_once($HaganeInit['appFolderDepth'].$HaganeInit['appFolderName'].'/config/config.php'); //llama a la configuracion de la carpeta de la app
-
-		$this->config = new \Hagane\Config($HaganeInit);
+	function start($config) {
+		$this->config = $config;
 		//timezone
-		if(array_key_exists('timezone', $this->config->getConf())) {
-			date_default_timezone_set($this->config->getConf()['timezone']);
+		if(array_key_exists('timezone', $this->config)) {
+			date_default_timezone_set($this->config['timezone']);
 		} else {
 			date_default_timezone_set('America/Monterrey');
-		}
-
-		//inicializacion de modulos
-		foreach ($this->config->getModules() as $module) {
-			include_once('Modules/'.$module.'.php');
-		}
-
-		//le da a load las configuraciones
-		if (class_exists('\\Hagane\\Load\\Loader')) {
-			\Hagane\Load\Loader::setConfig($this->config->getConf());
 		}
 
 		$this->enableCORS();
@@ -68,7 +56,7 @@ class App {
 		$RerosurceClass = '\\Hagane\\Resource\\'.$resourceName;
 		if ($resourceName) {
 			//var_dump($resourceName);
-			$resource = new $RerosurceClass($this->config->getConf());
+			$resource = new $RerosurceClass($this->config);
 			$resource->load();
 			$resource->execute($uri);
 		} else {
