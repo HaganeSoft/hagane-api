@@ -1,0 +1,11 @@
+{
+	"repositories": [
+		{
+			"type": "git",
+			"url": "git@github.com:/HaganeSoft/HaganeAPI"
+		}
+	],
+	"require": {
+		"hagane/api": "dev-master"
+	}
+}
