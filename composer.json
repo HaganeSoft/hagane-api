@@ -9,7 +9,7 @@
 	],
 	"autoload": {
 	   "psr-4" : {
-	     	"Hagane\\" : "lib/init.php"
+	     	"Hagane\\" : "src/Hagane/"
 	   }
 	}
 }
