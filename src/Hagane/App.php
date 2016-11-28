@@ -35,6 +35,11 @@ class App {
 			date_default_timezone_set('America/Monterrey');
 		}
 
+		//le da a load las configuraciones
+		if (class_exists('\\Hagane\\Load\\Loader')) {
+			\Hagane\Load\Loader::setConfig($this->config);
+		}
+
 		$this->enableCORS();
 		$this->call();
 	}
