@@ -1,0 +1,15 @@
+{
+	"name": "Hagane/Api",
+	"description": "Hagane API engine",
+	"authors": [
+	{
+		"name": "Erick Castillo",
+		"email": "erick@hagane.io"
+	}
+	],
+	"autoload": {
+	   "psr-4" : {
+	     	"Hagane\\" : "lib/init.php"
+	   }
+	}
+}
