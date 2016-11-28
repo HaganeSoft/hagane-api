@@ -39,11 +39,11 @@ class Router {
 			$method = $innerCall['method'];
 		}
 
-		if ($this->config['document_root'] != '/') {
-			$request = str_replace($this->config['document_root'], '', $request);
-		} else {
-			$request = substr($request, 1);
-		}
+		// if ($this->config['document_root'] != '/') {
+		// 	$request = str_replace($this->config['document_root'], '', $request);
+		// } else {
+		$request = substr($request, 1);
+		// }
 		// if ($tmp = $this->match((string)$request)) {
 		// 	$request = $tmp;
 		// }
