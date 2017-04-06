@@ -40,8 +40,9 @@ class App {
 			\Hagane\Load\Loader::setConfig($this->config);
 		}
 
-		$this->enableCORS();
-		$this->call();
+		if ($this->enableCORS()) {
+			$this->call();
+		}
 	}
 
 	function call($method = null, $uri = null) {
@@ -88,7 +89,11 @@ class App {
 
 			if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
 				header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+
+			return false;
 		}
+
+		return true;
 	}
 }
 
