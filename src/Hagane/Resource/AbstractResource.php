@@ -30,15 +30,14 @@ abstract class AbstractResource {
 
 		// access Token
 		$this->authenticationToken = null;
-	}
-
-	public function execute($uri) {
 		// retrieve access token if it is on the headers
 		$headers = getallheaders();
 		if (array_key_exists('Authentication-Token', $headers)) {
 			$this->authenticationToken = $headers['Authentication-Token'];
 		}
+	}
 
+	public function execute($uri) {
 		if (isset($uri['uri']) && $uri['uri'] != '') { //if uri exists
 			$methodNode = $this->matchMethod($uri);
 			$path = $this->matchPath($uri, $methodNode); //get uri or null
