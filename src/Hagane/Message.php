@@ -40,6 +40,23 @@ class Message {
 		}
 	}
 
+	function isError() {
+		if (empty($this->data)) {
+			return false;
+		}
+		if (!empty($this->data['error'])) {
+			return true;
+		}
+	}
+
+	function getError() {
+		if (!empty($this->data['error'])) {
+			return $this->data['error'];
+		}
+
+		return null;
+	}
+
 	function deleteMessage() {
 		if (!empty($this->data)) {
 			if (!empty($this->data['message'])) {
@@ -51,7 +68,7 @@ class Message {
 	function send() {
 		header("Content-type: application/json; charset=utf-8");
 		$this->data['success'] = true;
-		
+
 		if (!empty($this->data['error'])) {
 			unset($this->data['success']);
 		}
