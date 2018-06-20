@@ -133,7 +133,9 @@ class Database {
 		$camelCaseArray = !empty($arrayHolder) ? $arrayHolder : array();
 		foreach ($array as $key => $val) {
 			$newKey = @explode('_', $key);
-			array_walk($newKey, create_function('&$v', '$v = ucwords($v);'));
+			array_walk($newKey, function (&$v) {
+				$v = ucwords($v);
+			});
 			$newKey = @implode('', $newKey);
 			$newKey{0} = strtolower($newKey{0});
 			if (!is_array($val)) {
